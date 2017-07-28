@@ -1,0 +1,21 @@
+FROM bearstech/debian:jessie
+
+RUN apt-get update && \
+    apt-get install -y \
+        libffi6 \
+        libgdbm3 \
+        libgmp10 \
+        libncurses5 \
+        libreadline6 \
+        libssl1.0.0 \
+        libtinfo5 \
+        libyaml-0-2 \
+        zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG ruby_version
+
+COPY rubies/jessie/ruby-${ruby_version} /opt/rubies/ruby-${ruby_version}
+RUN ln -s /opt/rubies/ruby-${ruby_version}/bin/* /usr/local/bin/
+
+RUN /usr/local/bin/gem install bundler
