@@ -12,6 +12,18 @@ pull:
 	docker pull bearstech/debian:jessie
 	docker pull bearstech/debian:stretch
 
+push:
+	docker push bearstech/ruby:2.0
+	docker push bearstech/ruby-dev:2.0
+	docker push bearstech/ruby:2.1
+	docker push bearstech/ruby-dev:2.1
+	docker push bearstech/ruby:2.2
+	docker push bearstech/ruby-dev:2.2
+	docker push bearstech/ruby:2.3
+	docker push bearstech/ruby-dev:2.3
+	docker push bearstech/ruby:2.4
+	docker push bearstech/ruby-dev:2.4
+
 images: image-2.0 image-2.0-dev \
 	image-2.1 image-2.1-dev \
 	image-2.2 image-2.2-dev \
