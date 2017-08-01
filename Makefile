@@ -12,7 +12,11 @@ pull:
 	docker pull bearstech/debian:jessie
 	docker pull bearstech/debian:stretch
 
-images: image-2.0 image-2.1 image-2.1-dev image-2.2 image-2.3 image-2.3-dev image-2.4
+images: image-2.0 image-2.0-dev \
+	image-2.1 image-2.1-dev \
+	image-2.2 image-2.2-dev \
+	image-2.3 image-2.3-dev \
+	image-2.4 image-2.4-dev
 
 rubies: 2.0 2.2 2.4
 
@@ -33,6 +37,9 @@ rubies/jessie/ruby-$(RUBY20):
 image-2.0: 2.0
 	docker build -t bearstech/ruby:2.0 --build-arg ruby_version=$(RUBY20) -f Dockerfile.jessie .
 
+image-2.0-dev:
+	docker build -t bearstech/ruby-dev:2.0 --build-arg ruby_from=ruby:2.0 -f Dockerfile.dev .
+
 image-2.1:
 	docker build -t bearstech/ruby:2.1 -f Dockerfile.21 .
 
@@ -48,6 +55,9 @@ rubies/jessie/ruby-$(RUBY22):
 image-2.2: 2.2
 	docker build -t bearstech/ruby:2.2 --build-arg ruby_version=$(RUBY22) -f Dockerfile.jessie .
 
+image-2.2-dev:
+	docker build -t bearstech/ruby-dev:2.2 --build-arg ruby_from=ruby:2.2 -f Dockerfile.dev .
+
 image-2.3:
 	docker build -t bearstech/ruby:2.3 -f Dockerfile.23 .
 
@@ -62,3 +72,6 @@ rubies/stretch/ruby-$(RUBY24):
 
 image-2.4: 2.4
 	docker build -t bearstech/ruby:2.4 --build-arg ruby_version=$(RUBY24) -f Dockerfile.stretch .
+
+image-2.4-dev:
+	docker build -t bearstech/ruby-dev:2.4 --build-arg ruby_from=ruby:2.4 -f Dockerfile.dev .
