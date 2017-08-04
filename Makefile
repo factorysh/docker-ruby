@@ -87,3 +87,6 @@ image-2.4: 2.4
 
 image-2.4-dev:
 	docker build -t bearstech/ruby-dev:2.4 --build-arg ruby_from=ruby:2.4 -f Dockerfile.dev .
+
+clean:
+	rm -rf rubies
