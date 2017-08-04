@@ -7,10 +7,18 @@ RUN apt-get update && \
         bzip2 \
         build-essential \
         gnupg2 \
+        libffi-dev \
+        libgdbm3 \
+        libgdbm-dev \
+        libncurses5-dev \
+        libreadline6-dev \
+        libssl-dev \
+        libyaml-dev \
         make \
-	openssl \
+        openssl \
         ruby-dev \
         wget \
+        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /install
