@@ -6,6 +6,7 @@ RUN apt-get update && \
         bison \
         bzip2 \
         build-essential \
+        ca-certificates \
         gnupg2 \
         libffi-dev \
         libgdbm3 \
