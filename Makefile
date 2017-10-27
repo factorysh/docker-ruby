@@ -4,7 +4,7 @@ RUBY20 := 2.0.0-p648
 # 2.1 is in Jessie
 RUBY22 := 2.2.7
 # 2.3 is in Stretch
-RUBY24 := 2.4.1
+RUBY24 := 2.4.2
 
 all: pull tool images
 
