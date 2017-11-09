@@ -26,6 +26,7 @@ push:
 	docker push bearstech/ruby-dev:2.4
 	docker push bearstech/ruby:2.3-jessie
 	docker push bearstech/ruby-dev:2.4
+	docker push bearstech/sinatra-dev
 
 images: image-2.0 image-2.0-dev \
 	image-2.1 image-2.1-dev \
@@ -33,6 +34,7 @@ images: image-2.0 image-2.0-dev \
 	image-2.3 image-2.3-dev \
 	image-2.4 image-2.4-dev \
 	image-2.3-jessie image-2.3-jessie-dev \
+	image-sinatra-dev \
 
 rubies: 2.0 2.2 2.4 2.3-jessie
 
@@ -103,6 +105,9 @@ image-2.4: 2.4
 
 image-2.4-dev:
 	docker build -t bearstech/ruby-dev:2.4 --build-arg ruby_from=ruby:2.4 -f Dockerfile.dev .
+
+image-sinatra-dev:
+	docker build -t bearstech/sinatra-dev -f Dockerfile.sinatra-dev .
 
 clean:
 	rm -rf rubies
