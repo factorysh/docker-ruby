@@ -16,6 +16,6 @@ RUN apt-get update && \
 ARG ruby_version
 
 COPY rubies/stretch/ruby-${ruby_version} /opt/rubies/ruby-${ruby_version}
-RUN ln -s /opt/rubies/ruby-${ruby_version}/bin/* /usr/local/bin/
+ENV PATH=/usr/local/sbin:/usr/local/bin:/opt/rubies/ruby-${ruby_version}/bin/:/usr/sbin:/usr/bin:/sbin:/bin
 
 RUN /usr/local/bin/gem install bundler
