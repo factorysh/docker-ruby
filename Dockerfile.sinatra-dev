@@ -10,3 +10,6 @@ RUN echo "source 'https://rubygems.org'" > Gemfile && \
 ENV BUNDLE_PATH /vendor
 ENV BUNDLE_BIN /usr/local/bin
 EXPOSE 4567
+
+# web page should be /sinatra/web.rb, COPY it, or mount it.
+CMD bundle exec ruby web.rb
