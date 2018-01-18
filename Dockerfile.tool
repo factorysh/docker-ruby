@@ -7,6 +7,7 @@ RUN apt-get update && \
         bzip2 \
         build-essential \
         ca-certificates \
+        git \
         gnupg2 \
         libffi-dev \
         libgdbm3 \
