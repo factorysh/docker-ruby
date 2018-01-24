@@ -3,8 +3,9 @@ FROM bearstech/debian:jessie
 RUN apt-get update && \
     apt-get install -y \
 	build-essential \
+	bundler \
+        git \
         ruby2.1 \
 	ruby2.1-dev \
-	bundler \
     && apt-get install -y ruby \
     && rm -rf /var/lib/apt/lists/*
