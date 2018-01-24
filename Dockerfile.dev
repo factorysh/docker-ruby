@@ -7,3 +7,4 @@ RUN apt-get update && \
         ca-certificates \
         git \
     && rm -rf /var/lib/apt/lists/*
+RUN gem install bundler
