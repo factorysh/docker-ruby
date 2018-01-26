@@ -1,4 +1,4 @@
 bin
 rubies
-tests/.bundle/
-tests/vendor
+tests/test_install_json/.bundle/
+tests/test_install_json/vendor

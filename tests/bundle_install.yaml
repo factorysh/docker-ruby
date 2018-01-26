@@ -1,7 +1,7 @@
 ---
 
 command:
-    "./install_json.sh":
+    "cd test_install_json && ./install_json.sh":
         exit-status: 0
         timeout: 120000
         stdout:
