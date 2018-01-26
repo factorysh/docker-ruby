@@ -134,4 +134,12 @@ test-2.3-dev: bin/goss
 		bearstech/ruby-dev:2.3 \
 		goss -g ruby-dev.yaml --vars vars_2.3-dev.yaml validate
 
-tests: test-2.4-dev test-2.3-dev
+test-2.2-dev: bin/goss
+	@docker run --rm \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.2 \
+		goss -g ruby-dev.yaml --vars vars_2.2-dev.yaml validate
+
+tests: test-2.4-dev test-2.3-dev test-2.2-dev
