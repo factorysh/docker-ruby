@@ -6,6 +6,7 @@ RUBY22 := 2.2.7
 # 2.3 is in Stretch
 RUBY23 := 2.3.5
 RUBY24 := 2.4.2
+GOSS_VERSION := 0.3.5
 
 all: pull tool images
 
@@ -110,4 +111,17 @@ image-sinatra-dev:
 	docker build -t bearstech/sinatra-dev -f Dockerfile.sinatra-dev .
 
 clean:
-	rm -rf rubies
+	rm -rf rubies bin
+
+bin/goss:
+	mkdir -p bin
+	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
+	chmod +x bin/goss
+
+test-2.4-dev: bin/goss
+	docker run --rm \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests/2.4-dev:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.4 \
+		goss validate

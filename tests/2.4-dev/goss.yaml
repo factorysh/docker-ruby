@@ -1,0 +1,7 @@
+---
+
+command:
+    ruby -v:
+        exit-status: 0
+        stdout:
+            - /ruby 2\.4.*/
