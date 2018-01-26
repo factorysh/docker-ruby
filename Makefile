@@ -119,7 +119,7 @@ bin/goss:
 	chmod +x bin/goss
 
 test-2.4-dev: bin/goss
-	docker run --rm \
+	@docker run --rm \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
@@ -127,7 +127,7 @@ test-2.4-dev: bin/goss
 		goss -g ruby-dev.yaml --vars vars_2.4-dev.yaml validate
 
 test-2.3-dev: bin/goss
-	docker run --rm \
+	@docker run --rm \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
