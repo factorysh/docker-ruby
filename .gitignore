@@ -1,3 +1,4 @@
 bin
 rubies
 tests/.bundle/
+tests/vendor
