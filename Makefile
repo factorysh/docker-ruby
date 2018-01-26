@@ -119,27 +119,48 @@ bin/goss:
 	chmod +x bin/goss
 
 test-2.4-dev: bin/goss
+	@rm -rf tests/vendor
 	@docker run --rm \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
 		bearstech/ruby-dev:2.4 \
-		goss -g ruby-dev.yaml --vars vars_2.4-dev.yaml validate
+		goss -g ruby-dev.yaml --vars vars_2.4-dev.yaml validate --max-concurrent 4 --format documentation
 
 test-2.3-dev: bin/goss
+	@rm -rf tests/vendor
 	@docker run --rm \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
 		bearstech/ruby-dev:2.3 \
-		goss -g ruby-dev.yaml --vars vars_2.3-dev.yaml validate
+		goss -g ruby-dev.yaml --vars vars_2.3-dev.yaml validate --max-concurrent 4 --format documentation
 
 test-2.2-dev: bin/goss
+	@rm -rf tests/vendor
 	@docker run --rm \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
 		bearstech/ruby-dev:2.2 \
-		goss -g ruby-dev.yaml --vars vars_2.2-dev.yaml validate
+		goss -g ruby-dev.yaml --vars vars_2.2-dev.yaml validate --max-concurrent 4 --format documentation
 
-tests: test-2.4-dev test-2.3-dev test-2.2-dev
+test-2.1-dev: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.1 \
+		goss -g ruby-dev.yaml --vars vars_2.1-dev.yaml validate --max-concurrent 4 --format documentation
+
+test-2.0-dev: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.0 \
+		goss -g ruby-dev.yaml --vars vars_2.0-dev.yaml validate --max-concurrent 4 --format documentation
+
+tests: test-2.4-dev test-2.3-dev test-2.2-dev test-2.1-dev test-2.0-dev
