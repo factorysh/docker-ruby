@@ -1,0 +1,5 @@
+---
+
+command:
+    git version:
+        exit-status: 0

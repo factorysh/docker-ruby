@@ -1,4 +1,4 @@
-.PHONY: rubies
+.PHONY: rubies tests
 
 RUBY20 := 2.0.0-p648
 # 2.1 is in Jessie
@@ -121,7 +121,17 @@ bin/goss:
 test-2.4-dev: bin/goss
 	docker run --rm \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
-		-v `pwd`/tests/2.4-dev:/goss \
+		-v `pwd`/tests:/goss \
 		-w /goss \
 		bearstech/ruby-dev:2.4 \
-		goss validate
+		goss -g ruby-dev.yaml --vars vars_2.4-dev.yaml validate
+
+test-2.3-dev: bin/goss
+	docker run --rm \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.3 \
+		goss -g ruby-dev.yaml --vars vars_2.3-dev.yaml validate
+
+tests: test-2.4-dev test-2.3-dev
