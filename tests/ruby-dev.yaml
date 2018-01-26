@@ -3,3 +3,4 @@
 gossfile:
     ruby_version.yaml: {}
     git.yaml: {}
+    bundle_install.yaml: {}

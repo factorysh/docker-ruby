@@ -1,0 +1,13 @@
+---
+
+command:
+    "./install_json.sh":
+        exit-status: 0
+        timeout: 120000
+        stdout:
+{{ if gt .Vars.ruby_version_minor 1  }}
+            - /.*Bundle complete! 1 Gemfile dependency.*/
+{{ else }}
+            - /.*Your bundle is complete!.*/
+{{ end }}
+            - /.*{"hello":"world"}.*/
