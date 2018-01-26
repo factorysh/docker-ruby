@@ -4,4 +4,4 @@ command:
     ruby -v:
         exit-status: 0
         stdout:
-            - {{ .Vars.ruby_version_pattern }}
+            - /ruby 2\.{{ .Vars.ruby_version_minor }}.*/
