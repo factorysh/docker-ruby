@@ -118,49 +118,49 @@ bin/goss:
 	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
 	chmod +x bin/goss
 
-test-2.4-dev: bin/goss
+test-2.4: bin/goss
 	@rm -rf tests/vendor
-	@docker run --rm \
+	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
 		bearstech/ruby-dev:2.4 \
-		goss -g ruby-dev.yaml --vars vars_2.4-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g ruby-dev.yaml --vars vars/2_4.yaml validate --max-concurrent 4 --format documentation
 
-test-2.3-dev: bin/goss
+test-2.3: bin/goss
 	@rm -rf tests/vendor
-	@docker run --rm \
+	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
 		bearstech/ruby-dev:2.3 \
-		goss -g ruby-dev.yaml --vars vars_2.3-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g ruby-dev.yaml --vars vars/2_3.yaml validate --max-concurrent 4 --format documentation
 
-test-2.2-dev: bin/goss
+test-2.2: bin/goss
 	@rm -rf tests/vendor
-	@docker run --rm \
+	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
 		bearstech/ruby-dev:2.2 \
-		goss -g ruby-dev.yaml --vars vars_2.2-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g ruby-dev.yaml --vars vars/2_2.yaml validate --max-concurrent 4 --format documentation
 
-test-2.1-dev: bin/goss
+test-2.1: bin/goss
 	@rm -rf tests/vendor
-	@docker run --rm \
+	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
 		bearstech/ruby-dev:2.1 \
-		goss -g ruby-dev.yaml --vars vars_2.1-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g ruby-dev.yaml --vars vars/2_1.yaml validate --max-concurrent 4 --format documentation
 
-test-2.0-dev: bin/goss
+test-2.0: bin/goss
 	@rm -rf tests/vendor
-	@docker run --rm \
+	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
 		-w /goss \
 		bearstech/ruby-dev:2.0 \
-		goss -g ruby-dev.yaml --vars vars_2.0-dev.yaml validate --max-concurrent 4 --format documentation
+		goss -g ruby-dev.yaml --vars vars/2_0.yaml validate --max-concurrent 4 --format documentation
 
-tests: test-2.4-dev test-2.3-dev test-2.2-dev test-2.1-dev test-2.0-dev
+tests: test-2.4 test-2.3 test-2.2 test-2.1 test-2.0
