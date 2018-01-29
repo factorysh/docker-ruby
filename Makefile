@@ -1,4 +1,4 @@
-.PHONY: rubies
+.PHONY: rubies tests
 
 RUBY20 := 2.0.0-p648
 # 2.1 is in Jessie
@@ -6,6 +6,7 @@ RUBY22 := 2.2.7
 # 2.3 is in Stretch
 RUBY23 := 2.3.5
 RUBY24 := 2.4.2
+GOSS_VERSION := 0.3.5
 
 all: pull tool images
 
@@ -110,4 +111,56 @@ image-sinatra-dev:
 	docker build -t bearstech/sinatra-dev -f Dockerfile.sinatra-dev .
 
 clean:
-	rm -rf rubies
+	rm -rf rubies bin
+
+bin/goss:
+	mkdir -p bin
+	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
+	chmod +x bin/goss
+
+test-2.4: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.4 \
+		goss -g ruby-dev.yaml --vars vars/2_4.yaml validate --max-concurrent 4 --format documentation
+
+test-2.3: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.3 \
+		goss -g ruby-dev.yaml --vars vars/2_3.yaml validate --max-concurrent 4 --format documentation
+
+test-2.2: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.2 \
+		goss -g ruby-dev.yaml --vars vars/2_2.yaml validate --max-concurrent 4 --format documentation
+
+test-2.1: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.1 \
+		goss -g ruby-dev.yaml --vars vars/2_1.yaml validate --max-concurrent 4 --format documentation
+
+test-2.0: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.0 \
+		goss -g ruby-dev.yaml --vars vars/2_0.yaml validate --max-concurrent 4 --format documentation
+
+tests: test-2.4 test-2.3 test-2.2 test-2.1 test-2.0
