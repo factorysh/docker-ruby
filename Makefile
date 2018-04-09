@@ -4,7 +4,7 @@ RUBY20 := 2.0.0-p648
 # 2.1 is in Jessie
 RUBY22 := 2.2.7
 # 2.3 is in Stretch
-RUBY23 := 2.3.5
+RUBY23 := 2.3.7
 RUBY24 := 2.4.2
 GOSS_VERSION := 0.3.5
 
