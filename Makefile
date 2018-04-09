@@ -26,7 +26,7 @@ push:
 	docker push bearstech/ruby:2.4
 	docker push bearstech/ruby-dev:2.4
 	docker push bearstech/ruby:2.3-jessie
-	docker push bearstech/ruby-dev:2.4
+	docker push bearstech/ruby-dev:2.3-jessie
 	docker push bearstech/sinatra-dev
 
 images: image-2.0 image-2.0-dev \
@@ -136,6 +136,15 @@ test-2.3: bin/goss
 		bearstech/ruby-dev:2.3 \
 		goss -g ruby-dev.yaml --vars vars/2_3.yaml validate --max-concurrent 4 --format documentation
 
+test-2.3-jessie: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/ruby-dev:2.3-jessie \
+		goss -g ruby-dev.yaml --vars vars/2_3.yaml validate --max-concurrent 4 --format documentation
+
 test-2.2: bin/goss
 	@rm -rf tests/vendor
 	@docker run --rm -t \
@@ -163,4 +172,4 @@ test-2.0: bin/goss
 		bearstech/ruby-dev:2.0 \
 		goss -g ruby-dev.yaml --vars vars/2_0.yaml validate --max-concurrent 4 --format documentation
 
-tests: test-2.4 test-2.3 test-2.2 test-2.1 test-2.0
+tests: test-2.4 test-2.3 test-2.2 test-2.1 test-2.0 test-2.3-jessie
