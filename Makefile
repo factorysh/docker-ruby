@@ -74,7 +74,7 @@ rubies/jessie/ruby-2.3: tool-jessie
 image-2.3-jessie: 2.3-jessie
 	docker build -t bearstech/ruby:2.3-jessie --build-arg ruby_version=$(RUBY23) -f Dockerfile.jessie .
 
-image-2.3-dev-jessie:
+image-2.3-jessie-dev:
 	docker build -t bearstech/ruby-dev:2.3-jessie --build-arg ruby_from=ruby:2.3-jessie -f Dockerfile.dev .
 
 2.3-jessie: rubies/jessie/ruby-2.3
