@@ -8,7 +8,7 @@ RUBY23 := 2.3.7
 RUBY24 := 2.4.2
 GOSS_VERSION := 0.3.5
 
-all: pull tool images
+all: pull tool build
 
 pull:
 	docker pull bearstech/debian:jessie
@@ -29,7 +29,7 @@ push:
 	docker push bearstech/ruby-dev:2.3-jessie
 	docker push bearstech/sinatra-dev
 
-images: image-2.0 image-2.0-dev \
+build: image-2.0 image-2.0-dev \
 	image-2.1 image-2.1-dev \
 	image-2.2 image-2.2-dev \
 	image-2.3 image-2.3-dev \
