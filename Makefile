@@ -5,7 +5,7 @@ RUBY20 := 2.0.0-p648
 RUBY22 := 2.2.7
 # 2.3 is in Stretch
 RUBY23 := 2.3.7
-RUBY24 := 2.4.2
+RUBY24 := 2.4.4
 RUBY25 := 2.5.1
 GOSS_VERSION := 0.3.5
 
@@ -38,6 +38,7 @@ build: tool \
 	image-2.2 image-2.2-dev \
 	image-2.3 image-2.3-dev \
 	image-2.4 image-2.4-dev \
+	image-2.5 image-2.5-dev \
 	image-2.3-jessie image-2.3-jessie-dev \
 	image-sinatra-dev \
 
