@@ -43,7 +43,6 @@ build: tool \
 	image-sinatra-dev \
 
 tool: tool-jessie tool-stretch
-	tree -a rubies
 
 tool-jessie:
 	docker build -t ruby-install:jessie -f Dockerfile.tool --build-arg debian=jessie .
