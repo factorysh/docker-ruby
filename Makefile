@@ -65,9 +65,9 @@ rubies/jessie/ruby-$(RUBY22):
 	docker run --rm --volume `pwd`/rubies/jessie:/opt/rubies ruby-install:jessie \
 		bash -c 'apt-get update && ruby-install --rubies-dir /opt/rubies --jobs=2 --no-reinstall ruby $(RUBY22)'
 
-build-source-2.3-jessie: rubies/jessie/ruby-2.3
+build-source-2.3-jessie: rubies/jessie/ruby-$(RUBY23)
 
-rubies/jessie/ruby-2.3: tool-jessie
+rubies/jessie/ruby-$(RUBY23): tool-jessie
 	docker run --rm --volume `pwd`/rubies/jessie:/opt/rubies ruby-install:jessie \
 		bash -c 'apt-get update && ruby-install --rubies-dir /opt/rubies --jobs=2 --no-reinstall ruby 2.3'
 
