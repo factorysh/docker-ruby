@@ -142,7 +142,6 @@ bin/goss:
 	chmod +x bin/goss
 
 test-2.5: bin/goss
-	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
@@ -151,7 +150,6 @@ test-2.5: bin/goss
 		goss -g ruby-dev.yaml --vars vars/2_5.yaml validate --max-concurrent 4 --format documentation
 
 test-2.4: bin/goss
-	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
@@ -160,7 +158,6 @@ test-2.4: bin/goss
 		goss -g ruby-dev.yaml --vars vars/2_4.yaml validate --max-concurrent 4 --format documentation
 
 test-2.3: bin/goss
-	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
@@ -169,7 +166,6 @@ test-2.3: bin/goss
 		goss -g ruby-dev.yaml --vars vars/2_3.yaml validate --max-concurrent 4 --format documentation
 
 test-2.3-jessie: bin/goss
-	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
@@ -178,7 +174,6 @@ test-2.3-jessie: bin/goss
 		goss -g ruby-dev.yaml --vars vars/2_3.yaml validate --max-concurrent 4 --format documentation
 
 test-2.2: bin/goss
-	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
@@ -187,7 +182,6 @@ test-2.2: bin/goss
 		goss -g ruby-dev.yaml --vars vars/2_2.yaml validate --max-concurrent 4 --format documentation
 
 test-2.1: bin/goss
-	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \
@@ -196,7 +190,6 @@ test-2.1: bin/goss
 		goss -g ruby-dev.yaml --vars vars/2_1.yaml validate --max-concurrent 4 --format documentation
 
 test-2.0: bin/goss
-	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests:/goss \

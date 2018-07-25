@@ -3,7 +3,7 @@
 command:
     "cd test_install_json && ./install_json.sh":
         exit-status: 0
-        timeout: 120000
+        timeout: 300000
         stdout:
             - /.*(Bundle complete!)|(Your bundle is complete!).*/
             - /.*{"hello":"world"}.*/
