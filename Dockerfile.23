@@ -1,9 +1,0 @@
-FROM bearstech/debian:stretch
-
-RUN apt-get update && \
-    apt-get install -y \
-		ruby2.3 \
-		ruby \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN gem install --version=1.13.6 bundler

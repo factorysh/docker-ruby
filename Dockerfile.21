@@ -1,9 +1,0 @@
-FROM bearstech/debian:jessie
-
-RUN apt-get update && \
-    apt-get install -y \
-	ruby2.1 \
-    && apt-get install -y ruby \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN gem install --version=1.13.6 bundler

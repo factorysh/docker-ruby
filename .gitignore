@@ -3,3 +3,4 @@ rubies
 tests/test_install_json/.bundle/
 tests/test_install_json/vendor
 tests/.bundle/
+.dockerignore
