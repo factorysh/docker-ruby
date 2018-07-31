@@ -174,7 +174,7 @@ image-2.0-dev:
 	docker build \
 			-t bearstech/ruby-dev:2.0 \
 			-f Dockerfile.ruby-install-dev \
-			--build-arg RUBY_FROM=ruby:2.0 \
+			--build-arg RUBY_FROM_TAG=2.0 \
 			.
 
 image-2.1-dev:
@@ -191,7 +191,7 @@ image-2.2-dev:
 	docker build \
 			-t bearstech/ruby-dev:2.2 \
 			-f Dockerfile.ruby-install-dev \
-			--build-arg RUBY_FROM=ruby:2.2 \
+			--build-arg RUBY_FROM_TAG=2.2 \
 			.
 
 image-2.3-dev:
@@ -208,7 +208,7 @@ image-2.3-jessie-dev:
 	docker build \
 			-t bearstech/ruby-dev:2.3-jessie \
 			-f Dockerfile.ruby-install-dev \
-			--build-arg RUBY_FROM=ruby:2.3-jessie \
+			--build-arg RUBY_FROM_TAG=2.3-jessie \
 			.
 
 image-2.4-dev:
@@ -216,7 +216,7 @@ image-2.4-dev:
 	docker build \
 			-t bearstech/ruby-dev:2.4 \
 			-f Dockerfile.ruby-install-dev \
-			--build-arg RUBY_FROM=ruby:2.4 \
+			--build-arg RUBY_FROM_TAG=2.4 \
 			.
 
 image-2.5-dev:
@@ -224,7 +224,7 @@ image-2.5-dev:
 	docker build \
 			-t bearstech/ruby-dev:2.5 \
 			-f Dockerfile.ruby-install-dev \
-			--build-arg RUBY_FROM=ruby:2.5 \
+			--build-arg RUBY_FROM_TAG=2.5 \
 			.
 
 image-sinatra-dev:

@@ -1,5 +1,5 @@
-ARG RUBY_FROM
-FROM bearstech/${RUBY_FROM}
+ARG RUBY_FROM_TAG
+FROM bearstech/ruby:${RUBY_FROM_TAG}
 
 RUN set -eux \
     &&  apt-get update \
