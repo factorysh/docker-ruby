@@ -7,6 +7,8 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/opt/rubies/ruby-${RUBY_VERSION}/bin/:/u
 
 COPY rubies/${DEBIAN_DISTRO}/ruby-${RUBY_VERSION} /opt/rubies/ruby-${RUBY_VERSION}
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN set -eux \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
@@ -29,5 +31,21 @@ RUN set -eux \
         fi \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/* \
-    &&  gem install bundler \
+        # Get Ruby minus version
+    &&  RUBY_MINUS_VERSION=$(echo ${RUBY_VERSION} | sed -e 's/^[^.]*\.//' -e 's/\..*//') \
+        # Handle updates of rubygem based of ruy versions see #7
+    &&  if [ "${RUBY_MINUS_VERSION}" = "0" ]; then \
+            gem update -q --system 2.0.16 > /dev/null 2>&1; \
+        elif [ "${RUBY_MINUS_VERSION}" = "2" ]; then \
+            gem update -q --system 2.4.7 > /dev/null 2>&1; \
+        elif [ "${RUBY_MINUS_VERSION}" = "4" ]; then \
+            gem update -q --silent --system 2.6.14; \
+        elif [ "${RUBY_MINUS_VERSION}" = "5" ]; then \
+            gem update -q --silent --system; \
+        fi \
+        # Force install bundler, because in 2.5 bundle exists but no bundler
+        # ruby needs it to be forced
+    &&  gem install bundler -f \
     &&  gem cleanup all
+
+SHELL ["/bin/sh", "-c"]
