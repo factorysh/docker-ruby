@@ -32,6 +32,23 @@ push:
 	docker push bearstech/ruby-dev:2.3-jessie
 	docker push bearstech/sinatra-dev
 
+remove_image:
+	docker rmi bearstech/ruby:2.0
+	docker rmi bearstech/ruby-dev:2.0
+	docker rmi bearstech/ruby:2.1
+	docker rmi bearstech/ruby-dev:2.1
+	docker rmi bearstech/ruby:2.2
+	docker rmi bearstech/ruby-dev:2.2
+	docker rmi bearstech/ruby:2.3
+	docker rmi bearstech/ruby-dev:2.3
+	docker rmi bearstech/ruby:2.4
+	docker rmi bearstech/ruby-dev:2.4
+	docker rmi bearstech/ruby:2.5
+	docker rmi bearstech/ruby-dev:2.5
+	docker rmi bearstech/ruby:2.3-jessie
+	docker rmi bearstech/ruby-dev:2.3-jessie
+	docker rmi bearstech/sinatra-dev
+
 build: \
 	image-2.0 image-2.0-dev \
 	image-2.1 image-2.1-dev \
