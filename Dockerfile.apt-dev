@@ -1,6 +1,7 @@
 ARG DEBIAN_DISTRO
 FROM bearstech/debian:${DEBIAN_DISTRO}
 
+ARG DEBIAN_DISTRO
 ARG RUBY_VERSION
 
 RUN set -eux \
@@ -9,8 +10,17 @@ RUN set -eux \
                   build-essential \
                   bundler \
                   git \
+                  libpq-dev \
                   ruby \
                   ruby${RUBY_VERSION} \
                   ruby${RUBY_VERSION}-dev \
+    &&  if [ "${DEBIAN_DISTRO}" = "jessie" ]; then \
+            apt-get install -y --no-install-recommends \
+                  libmysqlclient-dev; \
+        elif [ "${DEBIAN_DISTRO}" = "stretch" ]; then \
+            apt-get install -y --no-install-recommends \
+                  default-libmysqlclient-dev \
+                  libmariadb-dev; \
+        fi \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/*
