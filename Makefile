@@ -248,6 +248,8 @@ image-sinatra-dev:
 	make -C . ignore_all_rubies
 	docker build -t bearstech/sinatra-dev -f Dockerfile.sinatra-dev .
 
+image-dev: image-2.0-dev image-2.1-dev image-2.2-dev image-2.3-dev image-2.4-dev image-2.5-dev
+
 clean:
 	rm -rf rubies bin
 	rm .dockerignore
