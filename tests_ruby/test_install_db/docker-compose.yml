@@ -1,0 +1,27 @@
+---
+
+version: "3"
+
+services:
+    pg:
+        image: postgres:9.6
+        environment:
+            POSTGRES_PASSWORD: example
+            POSTGRES_USER: test
+            POSTGRES_DB: demo
+
+    client:
+        build:
+            context: .
+            args:
+                RUBY_VERSION: ${RUBY_VERSION}
+        links:
+            - pg
+        environment:
+            POSTGRES_PASSWORD: example
+        volumes:
+            - .:/test
+        working_dir: /test
+        command: bundle exec test.rb
+
+
