@@ -7,6 +7,7 @@ RUN set -eux \
                     build-essential \
                     ca-certificates \
                     git \
+                     libgmp-dev \
                     libpq-dev \
                     lsb-release \
     && if [ `lsb_release -cs` = "stretch" ]; then \
