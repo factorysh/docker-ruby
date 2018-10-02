@@ -7,3 +7,8 @@ command:
         stdout:
             - /.*(Bundle complete!)|(Your bundle is complete!).*/
             - /.*{"hello":"world"}.*/
+
+    "cd test_install_db && ./install_db.sh":
+        exit-status: 0
+        timeout: 300000
+
