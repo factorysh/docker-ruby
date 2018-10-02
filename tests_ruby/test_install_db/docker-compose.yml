@@ -10,6 +10,14 @@ services:
             POSTGRES_USER: test
             POSTGRES_DB: demo
 
+    maria:
+        image: mariadb:10.1
+        environment:
+            MYSQL_ROOT_PASSWORD: s3cr3t
+            MYSQL_DATABASE: demo
+            MYSQL_USER: test
+            MYSQL_PASSWORD: example
+
     client:
         build:
             context: .
@@ -17,11 +25,10 @@ services:
                 RUBY_VERSION: ${RUBY_VERSION}
         links:
             - pg
+            - maria
         environment:
             POSTGRES_PASSWORD: example
         volumes:
             - .:/test
         working_dir: /test
         command: bundle exec test.rb
-
-

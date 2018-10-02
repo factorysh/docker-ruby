@@ -8,5 +8,5 @@ down:
 	RUBY_VERSION=${RUBY_VERSION} docker-compose down
 
 db:
-	RUBY_VERSION=${RUBY_VERSION} docker-compose up -d pg
+	RUBY_VERSION=${RUBY_VERSION} docker-compose up -d pg maria
 
