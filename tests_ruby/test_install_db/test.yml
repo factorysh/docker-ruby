@@ -1,0 +1,14 @@
+---
+
+command:
+    "bundle exec test_pg.rb":
+        exit-status: 0
+        timeout: 300000
+        stdout:
+            - 'pg: 2'
+
+    "bundle exec test_mysql.rb":
+        exit-status: 0
+        timeout: 300000
+        stdout:
+            - 'my: 2'

@@ -10,3 +10,5 @@ down:
 db:
 	RUBY_VERSION=${RUBY_VERSION} docker-compose up -d pg maria
 
+tests: | build down db
+	RUBY_VERSION=${RUBY_VERSION} docker-compose up --exit-code-from client client

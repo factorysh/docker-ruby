@@ -26,9 +26,8 @@ services:
         links:
             - pg
             - maria
-        environment:
-            POSTGRES_PASSWORD: example
         volumes:
             - .:/test
         working_dir: /test
-        command: bundle exec test.rb
+        tty: yes
+        command: ./bin/goss -g test.yml validate --format documentation
