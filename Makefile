@@ -265,7 +265,7 @@ tests_ruby/test_install_db/bin/goss: bin/goss
 
 goss: tests_ruby/test_install_db/bin/goss
 
-test-2.0: bin/goss
+test-2.0: tests_ruby/test_install_db/bin/goss
 	@printf "Handling %s\\n" "test-2.0"
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
@@ -273,8 +273,9 @@ test-2.0: bin/goss
 		-w /goss \
 		bearstech/ruby-dev:2.0 \
 		goss -g ruby-dev.yaml --vars vars/2_0.yaml validate --max-concurrent 4 --format documentation
+	@make -C tests_ruby/test_install_db tests down RUBY_VERSION=2.0
 
-test-2.1: bin/goss
+test-2.1: tests_ruby/test_install_db/bin/goss
 	@printf "Handling %s\\n" "test-2.1"
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
@@ -282,8 +283,9 @@ test-2.1: bin/goss
 		-w /goss \
 		bearstech/ruby-dev:2.1 \
 		goss -g ruby-dev.yaml --vars vars/2_1.yaml validate --max-concurrent 4 --format documentation
+	@make -C tests_ruby/test_install_db tests down RUBY_VERSION=2.1
 
-test-2.2: bin/goss
+test-2.2: tests_ruby/test_install_db/bin/goss
 	@printf "Handling %s\\n" "test-2.2"
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
@@ -291,8 +293,9 @@ test-2.2: bin/goss
 		-w /goss \
 		bearstech/ruby-dev:2.2 \
 		goss -g ruby-dev.yaml --vars vars/2_2.yaml validate --max-concurrent 4 --format documentation
+	@make -C tests_ruby/test_install_db tests down RUBY_VERSION=2.2
 
-test-2.3: bin/goss
+test-2.3: tests_ruby/test_install_db/bin/goss
 	@printf "Handling %s\\n" "test-2.3"
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
@@ -300,6 +303,7 @@ test-2.3: bin/goss
 		-w /goss \
 		bearstech/ruby-dev:2.3 \
 		goss -g ruby-dev.yaml --vars vars/2_3.yaml validate --max-concurrent 4 --format documentation
+	@make -C tests_ruby/test_install_db tests down RUBY_VERSION=2.3
 
 test-2.3-jessie: bin/goss
 	@printf "Handling %s\\n" "test-2.3-jessie"
@@ -310,7 +314,7 @@ test-2.3-jessie: bin/goss
 		bearstech/ruby-dev:2.3-jessie \
 		goss -g ruby-dev.yaml --vars vars/2_3.yaml validate --max-concurrent 4 --format documentation
 
-test-2.4: bin/goss
+test-2.4: tests_ruby/test_install_db/bin/goss
 	@printf "Handling %s\\n" "test-2.4"
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
@@ -318,6 +322,7 @@ test-2.4: bin/goss
 		-w /goss \
 		bearstech/ruby-dev:2.4 \
 		goss -g ruby-dev.yaml --vars vars/2_4.yaml validate --max-concurrent 4 --format documentation
+	@make -C tests_ruby/test_install_db tests down RUBY_VERSION=2.4
 
 test-2.5: bin/goss
 	@printf "Handling %s\\n" "test-2.5"
