@@ -1,6 +1,5 @@
 RUBY_VERSION:=""
 
-
 build:
 	RUBY_VERSION=${RUBY_VERSION} docker-compose build
 
@@ -10,5 +9,15 @@ down:
 db:
 	RUBY_VERSION=${RUBY_VERSION} docker-compose up -d pg maria
 
-tests: | build down db
+tests: | build down install db
 	RUBY_VERSION=${RUBY_VERSION} docker-compose up --exit-code-from client client
+
+install:
+	docker run --rm \
+		-v `pwd`:/ruby \
+		-w /ruby \
+		bearstech/ruby-dev:${RUBY_VERSION} \
+		./install_db.sh
+
+clean:
+	rm -rf vendor
