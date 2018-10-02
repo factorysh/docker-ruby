@@ -259,6 +259,16 @@ bin/goss:
 	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
 	chmod +x bin/goss
 
+tests_ruby/test_install_json/bin/goss: bin/goss
+	mkdir tests_ruby/test_install_json/bin
+	cp -r bin/goss tests_ruby/test_install_json/bin/goss
+
+tests_ruby/test_install_db/bin/goss: bin/goss
+	mkdir tests_ruby/test_install_db/bin
+	cp -r bin/goss tests_ruby/test_install_db/bin/goss
+
+goss: tests_ruby/test_install_json/bin/goss tests_ruby/test_install_db/bin/goss
+
 test-2.0: bin/goss
 	@printf "Handling %s\\n" "test-2.0"
 	@docker run --rm -t \
