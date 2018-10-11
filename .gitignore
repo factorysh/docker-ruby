@@ -2,5 +2,7 @@ bin
 rubies
 tests/test_install_json/.bundle/
 tests/test_install_json/vendor
+tests_ruby/test_install_db/vendor/
+tests_ruby/test_install_db/.bundle/
 tests/.bundle/
 .dockerignore

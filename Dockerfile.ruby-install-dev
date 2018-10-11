@@ -7,5 +7,16 @@ RUN set -eux \
                     build-essential \
                     ca-certificates \
                     git \
+                     libgmp-dev \
+                    libpq-dev \
+                    lsb-release \
+    && if [ `lsb_release -cs` = "stretch" ]; then \
+           apt-get install -y --no-install-recommends \
+                    default-libmysqlclient-dev \
+                    libmariadb-dev; \
+       else \
+           apt-get install -y --no-install-recommends \
+                    libmysqlclient-dev; \
+       fi \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/*
