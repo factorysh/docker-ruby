@@ -6,7 +6,7 @@ RUN set -eux \
     &&  apt-get install -y --no-install-recommends \
             libpq5 \
             lsb-release \
-    && if [ `lsb_release -cs` = "stretch" ]; then \
+    && if [ "$(lsb_release -cs)" = "stretch" ]; then \
          apt-get install -y --no-install-recommends \
             libmariadbclient18; \
        else \
