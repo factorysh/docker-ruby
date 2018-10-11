@@ -29,5 +29,5 @@ services:
         volumes:
             - .:/test
         working_dir: /test
-        tty: yes
+        tty: true
         command: ./bin/goss -g test.yml validate --format documentation

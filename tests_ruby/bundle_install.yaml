@@ -11,4 +11,3 @@ command:
     "cd test_install_db && ./install_db.sh":
         exit-status: 0
         timeout: 300000
-
