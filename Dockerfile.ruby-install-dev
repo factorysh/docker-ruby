@@ -10,7 +10,7 @@ RUN set -eux \
                      libgmp-dev \
                     libpq-dev \
                     lsb-release \
-    && if [ "$(lsb_release -cs`-)" = "stretch" ]; then \
+    && if [ "$(lsb_release -cs)" = "stretch" ]; then \
            apt-get install -y --no-install-recommends \
                     default-libmysqlclient-dev \
                     libmariadb-dev; \
