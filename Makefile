@@ -10,6 +10,19 @@ RUBY25 := 2.5.3
 GOSS_VERSION := 0.3.5
 
 USER=$(shell id -u)
+GIT_VERSION=$(shell git rev-parse HEAD)
+BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
+JESSIE_ID=$(shell docker images  bearstech/debian:jessie --format="{{.ID}}" --quiet)
+STRETCH_ID=$(shell docker images  bearstech/debian:stretch --format="{{.ID}}" --quiet)
+STRETCH_DEV_ID=$(shell docker images  bearstech/debian-dev:stretch --format="{{.ID}}" --quiet)
+
+DONE20=image-$(JESSIE_ID)-$(GIT_VERSION)-$(BRANCH)-20.done
+DONE21=image-$(JESSIE_ID)-$(GIT_VERSION)-$(BRANCH)-21.done
+DONE22=image-$(JESSIE_ID)-$(GIT_VERSION)-$(BRANCH)-22.done
+DONE23=image-$(STRETCH_ID)_$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-23.done
+DONE24=image-$(STRETCH_ID)_$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-24.done
+DONE25=image-$(STRETCH_ID)_$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-25.done
+DONE_SINATRA=image-$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-sinatra.done
 
 all: pull build
 
@@ -53,14 +66,79 @@ remove_image:
 
 build: | \
 	tools \
-	image-2.0 image-2.0-dev \
-	image-2.1 image-2.1-dev \
-	image-2.2 image-2.2-dev \
-	image-2.3 image-2.3-dev \
-	image-2.3-jessie image-2.3-jessie-dev \
-	image-2.4 image-2.4-dev \
-	image-2.5 image-2.5-dev \
-	image-sinatra-dev
+	done20 \
+	done21 \
+	done22 \
+	done23 \
+	done24 \
+	done25 \
+	done-sinatra
+
+done:
+	mkdir -p done
+
+done20:
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) done/$(DONE20)
+endif
+
+done21:
+ifeq (,$(wildcard done/$(DONE21)))
+	$(MAKE) done/$(DONE21)
+endif
+
+done22:
+ifeq (,$(wildcard done/$(DONE22)))
+	$(MAKE) done/$(DONE22)
+endif
+
+done23:
+ifeq (,$(wildcard done/$(DONE23)))
+	$(MAKE) done/$(DONE23)
+endif
+
+done24:
+ifeq (,$(wildcard done/$(DONE24)))
+	$(MAKE) done/$(DONE24)
+endif
+
+done25:
+ifeq (,$(wildcard done/$(DONE25)))
+	$(MAKE) done/$(DONE25)
+endif
+
+done-sinatra:
+ifeq (,$(wildcard done/$(DONE_SINATRA)))
+	$(MAKE) done/$(DONE_SINATRA)
+endif
+
+done/$(DONE20): | done image-2.0 image-2.0-dev test-2.0
+	rm -f done/image-*-20.done
+	touch done/$(DONE20)
+
+done/$(DONE21): | done image-2.1 image-2.1-dev test-2.1
+	rm -f done/image-*-21.done
+	touch done/$(DONE21)
+
+done/$(DONE22): | done image-2.2 image-2.2-dev test-2.2
+	rm -f done/image-*-22.done
+	touch done/$(DONE22)
+
+done/$(DONE23): | done image-2.3 image-2.3-dev image-2.3-jessie image-2.3-jessie-dev test-2.3
+	rm -f done/image-*-23.done
+	touch done/$(DONE23)
+
+done/$(DONE24): | done image-2.4 image-2.4-dev test-2.4
+	rm -f done/image-*-24.done
+	touch done/$(DONE24)
+
+done/$(DONE25): | done image-2.5 image-2.5-dev test-2.5
+	rm -f done/image-*-25.done
+	touch done/$(DONE25)
+
+done/$(DONE_SINATRA): | done image-sinatra-dev
+	rm -f done/image-*-sinatra.done
+	touch done/$(DONE_SINATRA)
 
 ## Docker ignore utils
 
@@ -266,7 +344,7 @@ image-sinatra-dev:
 image-dev: image-2.0-dev image-2.1-dev image-2.2-dev image-2.3-dev image-2.4-dev image-2.5-dev
 
 clean:
-	rm -rf rubies bin
+	rm -rf rubies bin done
 	rm .dockerignore
 
 bin/goss:
