@@ -16,12 +16,26 @@ JESSIE_ID=$(shell docker images  bearstech/debian:jessie --format="{{.ID}}" --qu
 STRETCH_ID=$(shell docker images  bearstech/debian:stretch --format="{{.ID}}" --quiet)
 STRETCH_DEV_ID=$(shell docker images  bearstech/debian-dev:stretch --format="{{.ID}}" --quiet)
 
-DONE20=image-$(JESSIE_ID)-$(GIT_VERSION)-$(BRANCH)-20.done
-DONE21=image-$(JESSIE_ID)-$(GIT_VERSION)-$(BRANCH)-21.done
-DONE22=image-$(JESSIE_ID)-$(GIT_VERSION)-$(BRANCH)-22.done
-DONE23=image-$(STRETCH_ID)_$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-23.done
-DONE24=image-$(STRETCH_ID)_$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-24.done
-DONE25=image-$(STRETCH_ID)_$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-25.done
+DOCKERFILE_APT=$(shell sha1sum Dockerfile.apt | cut -c 1-40)
+DOCKERFILE_APT_DEV=$(shell sha1sum Dockerfile.apt-dev | cut -c 1-40)
+DOCKERFILE_RUBY_INSTALL=$(shell sha1sum Dockerfile.ruby-install | cut -c 1-40)
+DOCKERFILE_RUBY_INSTALL_DEV=$(shell sha1sum Dockerfile.ruby-install-dev | cut -c 1-40)
+DOCKERFILE_SINATRA_DEV=$(shell sha1sum Dockerfile.sinatra-dev | cut -c 1-40)
+DOCKERFILE_TOOL=$(shell sha1sum Dockerfile.tool | cut -c 1-40)
+
+MK20=$(shell sha1sum ruby20.mk | cut -c 1-40)
+MK21=$(shell sha1sum ruby21.mk | cut -c 1-40)
+MK22=$(shell sha1sum ruby22.mk | cut -c 1-40)
+MK23=$(shell sha1sum ruby23.mk | cut -c 1-40)
+MK24=$(shell sha1sum ruby24.mk | cut -c 1-40)
+MK25=$(shell sha1sum ruby25.mk | cut -c 1-40)
+
+DONE20=image-$(JESSIE_ID)-$(MK20)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-20.done
+DONE21=image-$(JESSIE_ID)-$(MK21)-$(DOCKERFILE_APT)-$(DOCKERFILE_APT_DEV)-21.done
+DONE22=image-$(JESSIE_ID)-$(MK22)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-22.done
+DONE23=image-$(STRETCH_ID)_$(MK23)-$(DOCKERFILE_APT)-$(DOCKERFILE_APT_DEV)-23.done
+DONE24=image-$(STRETCH_ID)_$(MK24)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-24.done
+DONE25=image-$(STRETCH_ID)_$(MK25)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-25.done
 DONE_SINATRA=image-$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-sinatra.done
 
 include *.mk
