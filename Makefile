@@ -95,27 +95,41 @@ build-source-2.5: rubies/stretch/ruby-$(RUBY25)
 rubies/jessie/ruby-$(RUBY20):
 	make -C . tool-jessie
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="jessie"
-	docker run --rm --volume `pwd`/rubies/jessie:/opt/rubies ruby-install:jessie $(RUBY20)
+	docker run --rm \
+		--volume `pwd`/rubies/jessie:/opt/rubies \
+		-u `id -u` \
+		ruby-install:jessie $(RUBY20)
 
 rubies/jessie/ruby-$(RUBY22):
 	make -C . tool-jessie
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="jessie"
-	docker run --rm --volume `pwd`/rubies/jessie:/opt/rubies ruby-install:jessie $(RUBY22)
+	docker run --rm \
+		--volume `pwd`/rubies/jessie:/opt/rubies \
+		-u `id -u` \
+		ruby-install:jessie $(RUBY22)
 
 rubies/jessie/ruby-$(RUBY23):
 	make -C . tool-jessie
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="jessie"
-	docker run --rm --volume `pwd`/rubies/jessie:/opt/rubies ruby-install:jessie 2.3
+	docker run --rm \
+		--volume `pwd`/rubies/jessie:/opt/rubies \
+		ruby-install:jessie 2.3
 
 rubies/stretch/ruby-$(RUBY24):
 	make -C . tool-stretch
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="stretch"
-	docker run --rm --volume `pwd`/rubies/stretch:/opt/rubies ruby-install:stretch $(RUBY24)
+	docker run --rm \
+		--volume `pwd`/rubies/stretch:/opt/rubies \
+		-u `id -u` \
+		ruby-install:stretch $(RUBY24)
 
 rubies/stretch/ruby-$(RUBY25):
 	make -C . tool-stretch
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="stretch"
-	docker run --rm --volume `pwd`/rubies/stretch:/opt/rubies ruby-install:stretch $(RUBY25)
+	docker run --rm \
+		--volume `pwd`/rubies/stretch:/opt/rubies \
+		-u `id -u` \
+		ruby-install:stretch $(RUBY25)
 
 ## Build each image using ressources
 
