@@ -9,6 +9,8 @@ RUBY24 := 2.4.5
 RUBY25 := 2.5.3
 GOSS_VERSION := 0.3.5
 
+USER=$(shell id -u)
+
 all: pull build
 
 pull:
@@ -49,7 +51,8 @@ remove_image:
 	docker rmi bearstech/ruby-dev:2.3-jessie
 	docker rmi bearstech/sinatra-dev
 
-build: \
+build: | \
+	tools \
 	image-2.0 image-2.0-dev \
 	image-2.1 image-2.1-dev \
 	image-2.2 image-2.2-dev \
@@ -83,6 +86,8 @@ tool-stretch:
 	make -C . ignore_all_rubies
 	docker build -t ruby-install:stretch -f Dockerfile.tool --build-arg DEBIAN_DISTRO=stretch .
 
+tools: tool-jessie tool-stretch
+
 ## Download and install ressources
 ## We only install sources from ruby-install if it's doesn't exist in debian packages
 
@@ -97,39 +102,35 @@ rubies/jessie/ruby-$(RUBY20):
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="jessie"
 	docker run --rm \
 		--volume `pwd`/rubies/jessie:/opt/rubies \
-		-u `id -u` \
-		ruby-install:jessie $(RUBY20)
+		ruby-install:jessie $(RUBY20) $(USER)
 
 rubies/jessie/ruby-$(RUBY22):
 	make -C . tool-jessie
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="jessie"
 	docker run --rm \
 		--volume `pwd`/rubies/jessie:/opt/rubies \
-		-u `id -u` \
-		ruby-install:jessie $(RUBY22)
+		ruby-install:jessie $(RUBY22) $(USER)
 
 rubies/jessie/ruby-$(RUBY23):
 	make -C . tool-jessie
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="jessie"
 	docker run --rm \
 		--volume `pwd`/rubies/jessie:/opt/rubies \
-		ruby-install:jessie 2.3
+		ruby-install:jessie 2.3 $(USER)
 
 rubies/stretch/ruby-$(RUBY24):
 	make -C . tool-stretch
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="stretch"
 	docker run --rm \
 		--volume `pwd`/rubies/stretch:/opt/rubies \
-		-u `id -u` \
-		ruby-install:stretch $(RUBY24)
+		ruby-install:stretch $(RUBY24) $(USER)
 
 rubies/stretch/ruby-$(RUBY25):
 	make -C . tool-stretch
 	make -C . rubies_docker_ignore DOCKER_IGNORE_RUBIES_DEPTH="1" DOCKER_IGNORE_RUBIES_DIR_REV="stretch"
 	docker run --rm \
 		--volume `pwd`/rubies/stretch:/opt/rubies \
-		-u `id -u` \
-		ruby-install:stretch $(RUBY25)
+		ruby-install:stretch $(RUBY25) $(USER)
 
 ## Build each image using ressources
 

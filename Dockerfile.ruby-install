@@ -33,6 +33,7 @@ RUN set -eux \
 COPY rubies/${DEBIAN_DISTRO}/ruby-${RUBY_VERSION} /opt/rubies/ruby-${RUBY_VERSION}
 
 RUN set -eux \
+    &&  chown -R root /opt/rubies \
         # Get Ruby minus version
     &&  RUBY_MINUS_VERSION=$(echo ${RUBY_VERSION} | sed -e 's/^[^.]*\.//' -e 's/\..*//') \
         # Handle updates of rubygem based of ruy versions see #7
