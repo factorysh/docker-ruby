@@ -426,4 +426,24 @@ test-2.5: bin/goss
 		bearstech/ruby-dev:2.5 \
 		goss -g ruby-dev.yaml --vars vars/2_5.yaml validate --max-concurrent 4 --format documentation
 
-tests: | test-2.0 test-2.1 test-2.2 test-2.3 test-2.3-jessie test-2.4 test-2.5
+test-all: | test-2.0 test-2.1 test-2.2 test-2.3 test-2.3-jessie test-2.4 test-2.5
+
+tests:
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.0
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.1
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.2
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.3 test-2.3-jessie
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.4
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.5
+endif
