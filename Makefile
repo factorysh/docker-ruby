@@ -30,12 +30,12 @@ MK23=$(shell sha1sum ruby23.mk | cut -c 1-40)
 MK24=$(shell sha1sum ruby24.mk | cut -c 1-40)
 MK25=$(shell sha1sum ruby25.mk | cut -c 1-40)
 
-DONE20=image-$(JESSIE_ID)-$(MK20)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-20.done
-DONE21=image-$(JESSIE_ID)-$(MK21)-$(DOCKERFILE_APT)-$(DOCKERFILE_APT_DEV)-21.done
-DONE22=image-$(JESSIE_ID)-$(MK22)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-22.done
-DONE23=image-$(STRETCH_ID)_$(MK23)-$(DOCKERFILE_APT)-$(DOCKERFILE_APT_DEV)-23.done
-DONE24=image-$(STRETCH_ID)_$(MK24)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-24.done
-DONE25=image-$(STRETCH_ID)_$(MK25)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-25.done
+DONE20=image-$(JESSIE_ID)-$(MK20)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY20).done
+DONE21=image-$(JESSIE_ID)-$(MK21)-$(DOCKERFILE_APT)-$(DOCKERFILE_APT_DEV)-2.1.done
+DONE22=image-$(JESSIE_ID)-$(MK22)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY22).done
+DONE23=image-$(STRETCH_ID)_$(MK23)-$(DOCKERFILE_APT)-$(DOCKERFILE_APT_DEV)-2.3.done
+DONE24=image-$(STRETCH_ID)_$(MK24)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY24).done
+DONE25=image-$(STRETCH_ID)_$(MK25)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY25).done
 DONE_SINATRA=image-$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-sinatra.done
 
 include *.mk
@@ -129,27 +129,27 @@ ifeq (,$(wildcard done/$(DONE_SINATRA)))
 endif
 
 done/$(DONE20): | done image-2.0 image-2.0-dev test-2.0
-	rm -f done/image-*-20.done
+	rm -f done/image-*-2.0.*.done
 	touch done/$(DONE20)
 
 done/$(DONE21): | done image-2.1 image-2.1-dev test-2.1
-	rm -f done/image-*-21.done
+	rm -f done/image-*-2.1.done
 	touch done/$(DONE21)
 
 done/$(DONE22): | done image-2.2 image-2.2-dev test-2.2
-	rm -f done/image-*-22.done
+	rm -f done/image-*-2.2.*.done
 	touch done/$(DONE22)
 
 done/$(DONE23): | done image-2.3 image-2.3-dev image-2.3-jessie image-2.3-jessie-dev test-2.3
-	rm -f done/image-*-23.done
+	rm -f done/image-*-2.3.done
 	touch done/$(DONE23)
 
 done/$(DONE24): | done image-2.4 image-2.4-dev test-2.4
-	rm -f done/image-*-24.done
+	rm -f done/image-*-2.4.*.done
 	touch done/$(DONE24)
 
 done/$(DONE25): | done image-2.5 image-2.5-dev test-2.5
-	rm -f done/image-*-25.done
+	rm -f done/image-*-2.5.*.done
 	touch done/$(DONE25)
 
 done/$(DONE_SINATRA): | done image-sinatra-dev
