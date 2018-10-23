@@ -7,7 +7,7 @@ RUBY22 := 2.2.7
 RUBY23 := 2.3.8
 RUBY24 := 2.4.5
 RUBY25 := 2.5.3
-GOSS_VERSION := 0.3.5
+GOSS_VERSION := 0.3.6
 
 USER=$(shell id -u)
 GIT_VERSION=$(shell git rev-parse HEAD)
