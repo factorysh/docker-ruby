@@ -265,6 +265,7 @@ tests_ruby/test_install_db/bin/goss: bin/goss
 
 goss: tests_ruby/test_install_db/bin/goss
 
+<<<<<<< Updated upstream
 test-2.0: tests_ruby/test_install_db/bin/goss
 	@printf "Handling %s\\n" "test-2.0"
 	@docker run --rm -t \
@@ -334,3 +335,28 @@ test-2.5: bin/goss
 		goss -g ruby-dev.yaml --vars vars/2_5.yaml validate --max-concurrent 4 --format documentation
 
 tests: | test-2.0 test-2.1 test-2.2 test-2.3 test-2.3-jessie test-2.4 test-2.5
+=======
+down:
+
+test-all: | test-2.0 test-2.1 test-2.2 test-2.3 test-2.3-jessie test-2.4 test-2.5
+
+tests:
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.0
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.1
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.2
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.3 test-2.3-jessie
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.4
+endif
+ifeq (,$(wildcard done/$(DONE20)))
+	$(MAKE) test-2.5
+endif
+>>>>>>> Stashed changes
