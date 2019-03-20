@@ -49,10 +49,10 @@ pull:
 push:
 #	docker push bearstech/ruby:2.0
 #	docker push bearstech/ruby-dev:2.0
-	docker push bearstech/ruby:2.1
-	docker push bearstech/ruby-dev:2.1
-	docker push bearstech/ruby:2.2
-	docker push bearstech/ruby-dev:2.2
+	#docker push bearstech/ruby:2.1
+	#docker push bearstech/ruby-dev:2.1
+	#docker push bearstech/ruby:2.2
+	#docker push bearstech/ruby-dev:2.2
 	docker push bearstech/ruby:2.3
 	docker push bearstech/ruby-dev:2.3
 	docker push bearstech/ruby:2.4
@@ -82,8 +82,6 @@ remove_image:
 
 build: | \
 	tools \
-	done21 \
-	done22 \
 	done23 \
 	done24 \
 	done25 \
@@ -202,7 +200,7 @@ tests_ruby/test_install_db/bin/goss: bin/goss
 
 goss: tests_ruby/test_install_db/bin/goss
 
-test-all: | test-2.1 test-2.2 test-2.3 test-2.3-jessie test-2.4 test-2.5
+test-all: | test-2.3 test-2.3-jessie test-2.4 test-2.5
 
 down:
 
