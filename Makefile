@@ -208,12 +208,12 @@ tests:
 #ifeq (,$(wildcard done/$(DONE20)))
 #	$(MAKE) test-2.0
 #endif
-ifeq (,$(wildcard done/$(DONE20)))
-	$(MAKE) test-2.1
-endif
-ifeq (,$(wildcard done/$(DONE20)))
-	$(MAKE) test-2.2
-endif
+#ifeq (,$(wildcard done/$(DONE20)))
+#	$(MAKE) test-2.1
+#endif
+#ifeq (,$(wildcard done/$(DONE20)))
+#	$(MAKE) test-2.2
+#endif
 ifeq (,$(wildcard done/$(DONE20)))
 	$(MAKE) test-2.3 test-2.3-jessie
 endif
