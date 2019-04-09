@@ -12,3 +12,6 @@ RUN set -eux \
     &&  rm -rf /var/lib/apt/lists/* \
     &&  gem install --version=1.13.6 bundler \
     &&  gem cleanup all
+
+ARG GIT_VERSION
+LABEL com.bearstech.source.ruby=https://github.com/factorysh/docker-ruby/commit/${GIT_VERSION}
