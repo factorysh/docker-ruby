@@ -14,6 +14,7 @@ image-2.0: build-source-2.0
 			-f Dockerfile.ruby-install \
 			--build-arg DEBIAN_DISTRO=jessie \
 			--build-arg RUBY_VERSION=$(RUBY20) \
+			--build-arg GIT_VERSION=${GIT_VERSION} \
 			.
 
 image-2.0-dev:
@@ -22,6 +23,7 @@ image-2.0-dev:
 			-t bearstech/ruby-dev:2.0 \
 			-f Dockerfile.ruby-install-dev \
 			--build-arg RUBY_FROM_TAG=2.0 \
+			--build-arg GIT_VERSION=${GIT_VERSION} \
 			.
 
 test-2.0: tests_ruby/test_install_db/bin/goss

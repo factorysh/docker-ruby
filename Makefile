@@ -8,6 +8,7 @@ RUBY23 := 2.3.8
 RUBY24 := 2.4.5
 RUBY25 := 2.5.3
 GOSS_VERSION := 0.3.6
+GIT_VERSION := $(shell git rev-parse HEAD)
 
 USER=$(shell id -u)
 GIT_VERSION=$(shell git rev-parse HEAD)
@@ -171,17 +172,28 @@ rubies_docker_ignore:
 
 tool-jessie:
 	make -C . ignore_all_rubies
-	docker build -t ruby-install:jessie -f Dockerfile.tool --build-arg DEBIAN_DISTRO=jessie .
+	docker build \
+		-t ruby-install:jessie \
+		-f Dockerfile.tool \
+		--build-arg DEBIAN_DISTRO=jessie \
+		.
 
 tool-stretch:
 	make -C . ignore_all_rubies
-	docker build -t ruby-install:stretch -f Dockerfile.tool --build-arg DEBIAN_DISTRO=stretch .
+	docker build \
+		-t ruby-install:stretch \
+		-f Dockerfile.tool \
+		--build-arg DEBIAN_DISTRO=stretch \
+		.
 
 tools: tool-jessie tool-stretch
 
 image-sinatra-dev:
 	make -C . ignore_all_rubies
-	docker build -t bearstech/sinatra-dev -f Dockerfile.sinatra-dev .
+	docker build \
+		-t bearstech/sinatra-dev \
+		-f Dockerfile.sinatra-dev \
+		.
 
 image-dev: image-2.0-dev image-2.1-dev image-2.2-dev image-2.3-dev image-2.4-dev image-2.5-dev
 

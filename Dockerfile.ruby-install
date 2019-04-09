@@ -52,3 +52,6 @@ RUN set -eux \
     &&  gem cleanup all
 
 SHELL ["/bin/sh", "-c"]
+
+ARG GIT_VERSION
+LABEL com.bearstech.source.ruby=https://github.com/factorysh/docker-ruby/commit/${GIT_VERSION}

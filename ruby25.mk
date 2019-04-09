@@ -14,6 +14,7 @@ image-2.5: build-source-2.5
 			-f Dockerfile.ruby-install \
 			--build-arg DEBIAN_DISTRO=stretch \
 			--build-arg RUBY_VERSION=$(RUBY25) \
+			--build-arg GIT_VERSION=${GIT_VERSION} \
 			.
 
 image-2.5-dev:
@@ -22,6 +23,7 @@ image-2.5-dev:
 			-t bearstech/ruby-dev:2.5 \
 			-f Dockerfile.ruby-install-dev \
 			--build-arg RUBY_FROM_TAG=2.5 \
+			--build-arg GIT_VERSION=${GIT_VERSION} \
 			.
 
 test-2.5: bin/goss

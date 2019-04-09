@@ -15,6 +15,7 @@ image-2.3:
 			-f Dockerfile.apt \
 			--build-arg DEBIAN_DISTRO=stretch \
 			--build-arg RUBY_VERSION=2.3 \
+			--build-arg GIT_VERSION=${GIT_VERSION} \
 			.
 
 image-2.3-jessie: build-source-2.3-jessie
@@ -24,6 +25,7 @@ image-2.3-jessie: build-source-2.3-jessie
 			-f Dockerfile.ruby-install \
 			--build-arg DEBIAN_DISTRO=jessie \
 			--build-arg RUBY_VERSION=$(RUBY23) \
+			--build-arg GIT_VERSION=${GIT_VERSION} \
 			.
 
 image-2.3-dev:
@@ -33,6 +35,7 @@ image-2.3-dev:
 			-f Dockerfile.apt-dev \
 			--build-arg DEBIAN_DISTRO=stretch \
 			--build-arg RUBY_VERSION=2.3 \
+			--build-arg GIT_VERSION=${GIT_VERSION} \
 			.
 
 image-2.3-jessie-dev:
@@ -41,6 +44,7 @@ image-2.3-jessie-dev:
 			-t bearstech/ruby-dev:2.3-jessie \
 			-f Dockerfile.ruby-install-dev \
 			--build-arg RUBY_FROM_TAG=2.3-jessie \
+			--build-arg GIT_VERSION=${GIT_VERSION} \
 			.
 
 test-2.3: tests_ruby/test_install_db/bin/goss
