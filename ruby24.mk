@@ -15,6 +15,7 @@ image-2.4: build-source-2.4
 			--build-arg DEBIAN_DISTRO=stretch \
 			--build-arg RUBY_VERSION=$(RUBY24) \
 			--build-arg GIT_VERSION=${GIT_VERSION} \
+			--build-arg GIT_DATE="${GIT_DATE}" \
 			.
 
 image-2.4-dev:
@@ -24,6 +25,7 @@ image-2.4-dev:
 			-f Dockerfile.ruby-install-dev \
 			--build-arg RUBY_FROM_TAG=2.4 \
 			--build-arg GIT_VERSION=${GIT_VERSION} \
+			--build-arg GIT_DATE="${GIT_DATE}" \
 			.
 
 test-2.4: tests_ruby/test_install_db/bin/goss

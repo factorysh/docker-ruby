@@ -9,6 +9,7 @@ RUBY24 := 2.4.5
 RUBY25 := 2.5.3
 GOSS_VERSION := 0.3.6
 GIT_VERSION := $(shell git rev-parse HEAD)
+GIT_DATE := $(shell git show -s --format=%ci HEAD)
 
 USER=$(shell id -u)
 GIT_VERSION=$(shell git rev-parse HEAD)

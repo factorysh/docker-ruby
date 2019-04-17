@@ -15,6 +15,7 @@ image-2.2: build-source-2.2
 			--build-arg DEBIAN_DISTRO=jessie \
 			--build-arg RUBY_VERSION=$(RUBY22) \
 			--build-arg GIT_VERSION=${GIT_VERSION} \
+			--build-arg GIT_DATE="${GIT_DATE}" \
 			.
 
 image-2.2-dev:
@@ -24,6 +25,7 @@ image-2.2-dev:
 			-f Dockerfile.ruby-install-dev \
 			--build-arg RUBY_FROM_TAG=2.2 \
 			--build-arg GIT_VERSION=${GIT_VERSION} \
+			--build-arg GIT_DATE="${GIT_DATE}" \
 			.
 
 test-2.2: tests_ruby/test_install_db/bin/goss

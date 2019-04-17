@@ -55,3 +55,6 @@ SHELL ["/bin/sh", "-c"]
 
 ARG GIT_VERSION
 LABEL com.bearstech.source.ruby=https://github.com/factorysh/docker-ruby/commit/${GIT_VERSION}
+
+ARG GIT_DATE
+LABEL com.bearstech.date.ruby=${GIT_DATE}
