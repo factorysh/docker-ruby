@@ -7,6 +7,7 @@ image-2.1:
 			--build-arg DEBIAN_DISTRO=jessie \
 			--build-arg RUBY_VERSION=2.1 \
 			--build-arg GIT_VERSION=${GIT_VERSION} \
+			--build-arg GIT_DATE="${GIT_DATE}" \
 			.
 
 image-2.1-dev:
@@ -17,6 +18,7 @@ image-2.1-dev:
 			--build-arg DEBIAN_DISTRO=jessie \
 			--build-arg RUBY_VERSION=2.1 \
 			--build-arg GIT_VERSION=${GIT_VERSION} \
+			--build-arg GIT_DATE="${GIT_DATE}" \
 			.
 
 test-2.1: tests_ruby/test_install_db/bin/goss
