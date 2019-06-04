@@ -15,7 +15,6 @@ RUN set -eux \
                   ruby \
                   ruby${RUBY_VERSION} \
                   ruby${RUBY_VERSION}-dev \
-    &&  apt-get install -y --no-install-recommends \
                   default-libmysqlclient-dev \
                   libmariadb-dev \
     &&  apt-get clean \
