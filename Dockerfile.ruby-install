@@ -20,7 +20,7 @@ RUN set -eux \
                     zlib1g \
     &&  apt-get install -y --no-install-recommends \
                     libreadline7 \
-                    libssl1.1; \
+                    libssl1.1 \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/*
 
