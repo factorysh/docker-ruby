@@ -15,14 +15,8 @@ RUN set -eux \
                   ruby \
                   ruby${RUBY_VERSION} \
                   ruby${RUBY_VERSION}-dev \
-    &&  if [ "${DEBIAN_DISTRO}" = "jessie" ]; then \
-            apt-get install -y --no-install-recommends \
-                  libmysqlclient-dev; \
-        elif [ "${DEBIAN_DISTRO}" = "stretch" ]; then \
-            apt-get install -y --no-install-recommends \
                   default-libmysqlclient-dev \
-                  libmariadb-dev; \
-        fi \
+                  libmariadb-dev \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/*
 
