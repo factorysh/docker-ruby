@@ -3,7 +3,7 @@
 # 2.3 is in Stretch
 RUBY23 := 2.3.8
 RUBY24 := 2.4.5
-RUBY25 := 2.5.3
+RUBY25 := 2.5.6
 GOSS_VERSION := 0.3.6
 GIT_VERSION := $(shell git rev-parse HEAD)
 GIT_DATE := $(shell git show -s --format=%ci HEAD)
