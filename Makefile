@@ -1,3 +1,6 @@
+
+include Makefile.build_args
+
 .PHONY: rubies
 
 # 2.3 is in Stretch
@@ -5,11 +8,8 @@ RUBY23 := 2.3.8
 RUBY24 := 2.4.5
 RUBY25 := 2.5.6
 GOSS_VERSION := 0.3.6
-GIT_VERSION := $(shell git rev-parse HEAD)
-GIT_DATE := $(shell git show -s --format=%ci HEAD)
 
 USER=$(shell id -u)
-GIT_VERSION=$(shell git rev-parse HEAD)
 BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 STRETCH_ID=$(shell docker images  bearstech/debian:stretch --format="{{.ID}}" --quiet)
 STRETCH_DEV_ID=$(shell docker images  bearstech/debian-dev:stretch --format="{{.ID}}" --quiet)
@@ -119,7 +119,8 @@ rubies_docker_ignore:
 
 tool-stretch:
 	make -C . ignore_all_rubies
-	docker build \
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
 		-t ruby-install:stretch \
 		-f Dockerfile.tool \
 		--build-arg DEBIAN_DISTRO=stretch \
@@ -129,7 +130,8 @@ tools: tool-stretch
 
 image-sinatra-dev:
 	make -C . ignore_all_rubies
-	docker build \
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/sinatra-dev \
 		-f Dockerfile.sinatra-dev \
 		.
