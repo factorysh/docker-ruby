@@ -1,4 +1,5 @@
 
+include Makefile.lint
 include Makefile.build_args
 
 .PHONY: rubies
