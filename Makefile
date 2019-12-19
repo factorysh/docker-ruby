@@ -8,7 +8,7 @@ include Makefile.build_args
 RUBY23 := 2.3.8
 RUBY24 := 2.4.5
 RUBY25 := 2.5.6
-GOSS_VERSION := 0.3.6
+GOSS_VERSION := 0.3.9
 
 USER=$(shell id -u)
 BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
