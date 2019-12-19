@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    mysql2 (0.5.3)
+    pg (1.1.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mysql2!
+  pg!
+
+BUNDLED WITH
+   2.1.1
