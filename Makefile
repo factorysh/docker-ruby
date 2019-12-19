@@ -143,13 +143,17 @@ clean:
 	rm -rf rubies bin done
 	rm .dockerignore
 
-bin/goss:
+bin/goss-$(GOSS_VERSION):
 	mkdir -p bin
-	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
-	chmod +x bin/goss
+	curl -o bin/goss-$(GOSS_VERSION) -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
+	chmod +x bin/goss-$(GOSS_VERSION)
+
+bin/goss: bin/goss-$(GOSS_VERSION)
+	ln -sf goss-$(GOSS_VERSION) bin/goss
 
 tests_ruby/test_install_db/bin/goss: bin/goss
-	mkdir tests_ruby/test_install_db/bin
+	mkdir -p tests_ruby/test_install_db/bin
+	cp -r bin/goss-$(GOSS_VERSION) tests_ruby/test_install_db/bin/goss-$(GOSS_VERSION)
 	cp -r bin/goss tests_ruby/test_install_db/bin/goss
 
 goss: tests_ruby/test_install_db/bin/goss
