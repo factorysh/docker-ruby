@@ -1,13 +1,17 @@
 ---
 
 command:
-    "cd test_install_json && RUBY_VERSION=2.{{ .Vars.ruby_version_minor }} ./install_json.sh":
+    ? cd test_install_json
+      && RUBY_VERSION=2.{{ .Vars.ruby_version_minor }} ./install_json.sh"
+    :
         exit-status: 0
         timeout: 300000
         stdout:
             - /.*(Bundle complete!)|(Your bundle is complete!).*/
             - /.*{"hello":"world"}.*/
 
-    "cd test_install_db && RUBY_VERSION=2.{{ .Vars.ruby_version_minor }} ./install_db.sh":
+    ? cd test_install_db
+       && RUBY_VERSION=2.{{ .Vars.ruby_version_minor }} ./install_db.sh"
+    :
         exit-status: 0
         timeout: 300000
