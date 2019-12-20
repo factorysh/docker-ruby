@@ -28,10 +28,4 @@ image-2.5-dev:
 
 test-2.5: bin/goss
 	@printf "Handling %s\\n" "test-2.5"
-	@docker run --rm -t \
-		-v `pwd`/bin/goss:/usr/local/bin/goss \
-		-v `pwd`/tests_ruby:/goss \
-		-w /goss \
-		bearstech/ruby-dev:2.5 \
-		goss -g ruby-dev.yaml --vars vars/2_5.yaml validate --max-concurrent 4 --format documentation
-
+	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=2.5
