@@ -21,12 +21,12 @@ RUN set -eux \
                     libreadline7 \
                     libssl1.1 \
     &&  apt-get clean \
-    &&  rm -rf /var/lib/apt/lists/*
+    &&  rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /opt/rubies/ && chown root:root /opt/rubies
 
-COPY rubies/${DEBIAN_DISTRO}/ruby-${RUBY_VERSION} /opt/rubies/ruby-${RUBY_VERSION}
+COPY --chown=root:root rubies/${DEBIAN_DISTRO}/ruby-${RUBY_VERSION} /opt/rubies/ruby-${RUBY_VERSION}
 
 RUN set -eux \
-    &&  chown -R root /opt/rubies \
         # Get Ruby minus version
     &&  RUBY_MINUS_VERSION=$(echo ${RUBY_VERSION} | sed -e 's/^[^.]*\.//' -e 's/\..*//') \
         # Handle updates of rubygem based of ruy versions see #7
