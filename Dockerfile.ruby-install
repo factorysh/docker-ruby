@@ -8,6 +8,7 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/opt/rubies/ruby-${RUBY_VERSION}/bin/:/u
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN set -eux \
+    &&  export http_proxy=${HTTP_PROXY} \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
                     ca-certificates \
