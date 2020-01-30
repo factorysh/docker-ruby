@@ -5,6 +5,7 @@ ENV RUBY_INSTALL_VERSION=0.6.1
 WORKDIR /install
 
 RUN set -eux \
+    &&  export http_proxy=${HTTP_PROXY} \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
                       bison \
