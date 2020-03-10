@@ -11,14 +11,19 @@ RUN set -eux \
                      libgmp-dev \
                     libpq-dev \
                     lsb-release \
+    && if [ "$(lsb_release -cs)" = "buster" ]; then \
+           apt-get install -y --no-install-recommends \
+                    libmariadb-dev \
+       ; fi \
     && if [ "$(lsb_release -cs)" = "stretch" ]; then \
            apt-get install -y --no-install-recommends \
                     default-libmysqlclient-dev \
-                    libmariadb-dev; \
-       else \
+                    libmariadb-dev \
+       ; fi \
+    && if [ "$(lsb_release -cs)" = "jessie" ]; then \
            apt-get install -y --no-install-recommends \
-                    libmysqlclient-dev; \
-       fi \
+                    libmysqlclient-dev \
+       ; fi \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/*
 
