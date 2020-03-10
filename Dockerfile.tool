@@ -1,5 +1,6 @@
 ARG DEBIAN_DISTRO
 FROM bearstech/debian:${DEBIAN_DISTRO}
+ARG DEBIAN_DISTRO
 
 ENV RUBY_INSTALL_VERSION=0.6.1
 WORKDIR /install
@@ -7,7 +8,7 @@ WORKDIR /install
 RUN set -eux \
     &&  export http_proxy=${HTTP_PROXY} \
     &&  apt-get update \
-    &&  apt-get install -y --no-install-recommends \
+    &&  if [ "${DEBIAN_DISTRO}" = "stretch" ]; then apt-get install -y --no-install-recommends \
                       bison \
                       bzip2 \
                       build-essential \
@@ -26,6 +27,27 @@ RUN set -eux \
                       ruby-dev \
                       wget \
                       zlib1g-dev \
+	; fi \
+    &&  if [ "${DEBIAN_DISTRO}" = "buster" ]; then apt-get install -y --no-install-recommends \
+                      bison \
+                      bzip2 \
+                      build-essential \
+                      ca-certificates \
+                      git \
+                      gnupg2 \
+                      libffi-dev \
+                      libgdbm6 \
+                      libgdbm-dev \
+                      libncurses5-dev \
+                      libreadline6-dev \
+                      libssl-dev \
+                      libyaml-dev \
+                      make \
+                      openssl \
+                      ruby-dev \
+                      wget \
+                      zlib1g-dev \
+	; fi \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/* \
     &&  wget https://raw.github.com/postmodern/postmodern.github.io/master/postmodern.asc \
