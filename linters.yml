@@ -3,11 +3,16 @@
 shellcheck:
     include:
         - "*.sh"
-
+    exclude:
+        - "*/vendor/ruby/*"
 yamllint:
     include:
         - "*.yaml"
         - "*.yml"
+    exclude:
+        - "*/vendor/ruby/*"
+        - "./rubies/stretch/ruby-*/lib/ruby/gems/*"
+        - "./rubies/buster/ruby-*/lib/ruby/gems/*"
 
 hadolint:
     include:
