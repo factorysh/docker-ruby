@@ -8,7 +8,8 @@ include Makefile.build_args
 RUBY23 := 2.3.8
 RUBY24 := 2.4.5
 RUBY25 := 2.5.6
-RUBY26 := 2.6.5
+RUBY26 := 2.6.6
+RUBY27 := 2.7.2
 GOSS_VERSION := 0.3.9
 
 USER=$(shell id -u)
@@ -29,11 +30,13 @@ MK23=$(shell sha1sum ruby23.mk | cut -c 1-40)
 MK24=$(shell sha1sum ruby24.mk | cut -c 1-40)
 MK25=$(shell sha1sum ruby25.mk | cut -c 1-40)
 MK26=$(shell sha1sum ruby26.mk | cut -c 1-40)
+MK27=$(shell sha1sum ruby27.mk | cut -c 1-40)
 
 DONE23=image-$(STRETCH_ID)_$(MK23)-$(DOCKERFILE_APT)-$(DOCKERFILE_APT_DEV)-2.3.done
 DONE24=image-$(STRETCH_ID)_$(MK24)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY24).done
 DONE25=image-$(STRETCH_ID)_$(MK25)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY25).done
 DONE26=image-$(STRETCH_ID)_$(MK26)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY26).done
+DONE27=image-$(STRETCH_ID)_$(MK27)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY27).done
 DONE_SINATRA=image-$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-sinatra.done
 
 include *.mk
@@ -52,6 +55,8 @@ push:
 	docker push bearstech/ruby-dev:2.5
 	docker push bearstech/ruby:2.6
 	docker push bearstech/ruby-dev:2.6
+	docker push bearstech/ruby:2.7
+	docker push bearstech/ruby-dev:2.7
 	docker push bearstech/sinatra-dev
 
 remove_image:
@@ -63,6 +68,8 @@ remove_image:
 	docker rmi bearstech/ruby-dev:2.5
 	docker rmi bearstech/ruby:2.6
 	docker rmi bearstech/ruby-dev:2.6
+	docker rmi bearstech/ruby:2.7
+	docker rmi bearstech/ruby-dev:2.7
 	docker rmi bearstech/sinatra-dev
 
 build: | \
@@ -71,6 +78,7 @@ build: | \
 	done24 \
 	done25 \
 	done26 \
+	done27 \
 	done-sinatra
 
 done:
@@ -96,6 +104,11 @@ ifeq (,$(wildcard done/$(DONE26)))
 	$(MAKE) done/$(DONE26)
 endif
 
+done27:
+ifeq (,$(wildcard done/$(DONE27)))
+	$(MAKE) done/$(DONE27)
+endif
+
 done-sinatra:
 ifeq (,$(wildcard done/$(DONE_SINATRA)))
 	$(MAKE) done/$(DONE_SINATRA)
@@ -116,6 +129,10 @@ done/$(DONE25): | done image-2.5 image-2.5-dev test-2.5
 done/$(DONE26): | done image-2.6 image-2.6-dev test-2.6
 	rm -f done/image-*-2.6.*.done
 	touch done/$(DONE26)
+
+done/$(DONE27): | done image-2.7 image-2.7-dev test-2.7
+	rm -f done/image-*-2.7.*.done
+	touch done/$(DONE27)
 
 done/$(DONE_SINATRA): | done image-sinatra-dev
 	rm -f done/image-*-sinatra.done
@@ -165,7 +182,7 @@ image-sinatra-dev:
 		-f Dockerfile.sinatra-dev \
 		.
 
-image-dev: image-2.0-dev image-2.1-dev image-2.2-dev image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev
+image-dev: image-2.0-dev image-2.1-dev image-2.2-dev image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev
 
 clean:
 	rm -rf rubies bin done
@@ -186,7 +203,7 @@ tests_ruby/test_install_db/bin/goss: bin/goss
 
 goss: tests_ruby/test_install_db/bin/goss
 
-test-all: | test-2.3 test-2.4 test-2.5 test-2.6
+test-all: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7
 
 down:
 
