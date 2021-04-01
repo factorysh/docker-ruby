@@ -1,5 +1,5 @@
 ARG DEBIAN_DISTRO
-FROM bearstech/debian:${DEBIAN_DISTRO}
+FROM bearstech/debian-dev:${DEBIAN_DISTRO}
 
 ARG DEBIAN_DISTRO
 ARG RUBY_VERSION
@@ -8,9 +8,7 @@ RUN set -eux \
     &&  export http_proxy=${HTTP_PROXY} \
     &&  apt-get update \
     &&  if [ "${DEBIAN_DISTRO}" = "stretch" ]; then apt-get install -y --no-install-recommends \
-                  build-essential \
                   bundler \
-                  git \
                   libgmp-dev \
                   libpq-dev \
                   ruby \
@@ -20,9 +18,16 @@ RUN set -eux \
                   libmariadb-dev \
         ; fi \
     &&  if [ "${DEBIAN_DISTRO}" = "buster" ]; then apt-get install -y --no-install-recommends \
-                  build-essential \
                   bundler \
-                  git \
+                  libgmp-dev \
+                  libpq-dev \
+                  ruby \
+                  ruby${RUBY_VERSION} \
+                  ruby${RUBY_VERSION}-dev \
+                  libmariadb-dev \
+        ; fi \
+    &&  if [ "${DEBIAN_DISTRO}" = "bullseye" ]; then apt-get install -y --no-install-recommends \
+                  bundler \
                   libgmp-dev \
                   libpq-dev \
                   ruby \
