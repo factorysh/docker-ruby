@@ -16,6 +16,7 @@ install:
 	docker run --rm \
 		-v `pwd`:/ruby \
 		-w /ruby \
+		-u `id -u` \
 		-e RUBY_VERSION=${RUBY_VERSION} \
 		bearstech/ruby-dev:${RUBY_VERSION} \
 		./install_db.sh
