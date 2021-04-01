@@ -27,6 +27,8 @@ RUN set -eux \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/*
 
+RUN gem install rake -v 13.0.3 && gem install rake-compiler -v 1.1.1
+
 # generated labels
 
 ARG GIT_VERSION
