@@ -17,6 +17,15 @@ image-2.7: build-source-2.7
 			--build-arg RUBY_VERSION=$(RUBY27) \
 			.
 
+image-2.7-bullseye:
+	docker build \
+		$(DOCKER_BUILD_ARGS) \
+			-t bearstech/ruby:2.7-bullseye \
+			-f Dockerfile.apt \
+			--build-arg DEBIAN_DISTRO=bullseye \
+			--build-arg RUBY_VERSION=2.7 \
+			.
+
 image-2.7-dev:
 	make -C . ignore_all_rubies
 	 docker build \
@@ -24,6 +33,15 @@ image-2.7-dev:
 			-t bearstech/ruby-dev:2.7 \
 			-f Dockerfile.ruby-install-dev \
 			--build-arg RUBY_FROM_TAG=2.7 \
+			.
+
+image-2.7-dev-bullseye:
+	docker build \
+		$(DOCKER_BUILD_ARGS) \
+			-t bearstech/ruby-dev:2.7-bullseye \
+			-f Dockerfile.apt-dev \
+			--build-arg DEBIAN_DISTRO=bullseye \
+			--build-arg RUBY_VERSION=2.7 \
 			.
 
 test-2.7: bin/goss
