@@ -6,6 +6,10 @@ RUN set -eux \
     &&  apt-get install -y --no-install-recommends \
             libpq5 \
             lsb-release \
+    && if [ "$(lsb_release -cs)" = "bullseye" ]; then \
+         apt-get install -y --no-install-recommends \
+            libmariadb3 \
+       ; fi \
     && if [ "$(lsb_release -cs)" = "buster" ]; then \
          apt-get install -y --no-install-recommends \
             libmariadb3 \
