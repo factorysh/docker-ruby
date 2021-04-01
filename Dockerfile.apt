@@ -2,17 +2,22 @@ ARG DEBIAN_DISTRO
 FROM bearstech/debian:${DEBIAN_DISTRO}
 
 ARG RUBY_VERSION
+ARG DEBIAN_DISTRO
 
 RUN set -eux \
-    &&  export http_proxy=${HTTP_PROXY} \
-    &&  apt-get update \
-    &&  apt-get install -y --no-install-recommends \
+    && export http_proxy=${HTTP_PROXY} \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
             ruby \
             ruby${RUBY_VERSION} \
-    &&  apt-get clean \
-    &&  rm -rf /var/lib/apt/lists/* \
-    &&  gem install --version=1.13.6 bundler \
-    &&  gem cleanup all
+    && if [ "${DEBIAN_DISTRO}" = "bullseye" ]; then \
+	  apt-get install -y --no-install-recommends bundler \
+	else \
+	  gem install --version=1.13.6 bundler; \
+          gem cleanup all; \
+	fi \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # generated labels
 
