@@ -11,9 +11,13 @@ RUN set -eux \
             ruby \
             ruby${RUBY_VERSION} \
     && if [ "${DEBIAN_DISTRO}" = "bullseye" ]; then \
-	  apt-get install -y --no-install-recommends bundler \
+	  apt-get install -y --no-install-recommends bundler; \
 	else \
-	  gem install --version=1.13.6 bundler; \
+	  gem install \
+            --version=1.13.6 \
+            --no-document \
+            --bindir /usr/local/bin \
+            bundler; \
           gem cleanup all; \
 	fi \
     && apt-get clean \
