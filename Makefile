@@ -79,7 +79,9 @@ build: | \
 	done25 \
 	done26 \
 	done27 \
-	done-sinatra
+	done-sinatra \
+	image-2.7-bullseye \
+	image-2.7-dev-bullseye
 
 done:
 	mkdir -p done
