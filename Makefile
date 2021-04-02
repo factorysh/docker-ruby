@@ -182,7 +182,7 @@ image-sinatra-dev:
 		-f Dockerfile.sinatra-dev \
 		.
 
-image-dev: image-2.0-dev image-2.1-dev image-2.2-dev image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev
+image-dev: image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev
 
 clean:
 	rm -rf rubies bin done
