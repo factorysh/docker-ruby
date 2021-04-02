@@ -182,7 +182,9 @@ image-sinatra-dev:
 		-f Dockerfile.sinatra-dev \
 		.
 
-image-dev: image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev
+image-dev: image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev image-2.7-dev-bullseye
+image: image-2.3 image-2.4 image-2.5 image-2.6 image-2.7 image-2.7-bullseye
+images: image image-dev
 
 clean:
 	rm -rf rubies bin done
@@ -203,7 +205,7 @@ tests_ruby/test_install_db/bin/goss: bin/goss
 
 goss: tests_ruby/test_install_db/bin/goss
 
-test-all: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7
+test-all: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7 test-2.7-bullseye
 
 down:
 
