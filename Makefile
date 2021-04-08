@@ -57,6 +57,8 @@ push:
 	docker push bearstech/ruby-dev:2.6
 	docker push bearstech/ruby:2.7
 	docker push bearstech/ruby-dev:2.7
+	docker push bearstech/ruby:2.7-bullseye
+	docker push bearstech/ruby-dev:2.7-bullseye
 	docker push bearstech/sinatra-dev
 
 remove_image:
@@ -70,6 +72,8 @@ remove_image:
 	docker rmi bearstech/ruby-dev:2.6
 	docker rmi bearstech/ruby:2.7
 	docker rmi bearstech/ruby-dev:2.7
+	docker rmi bearstech/ruby:2.7-bullseye
+	docker rmi bearstech/ruby-dev:2.7-bullseye
 	docker rmi bearstech/sinatra-dev
 
 build: | \
