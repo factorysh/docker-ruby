@@ -6,10 +6,10 @@ include Makefile.build_args
 
 # 2.3 is in Stretch
 RUBY23 := 2.3.8
-RUBY24 := 2.4.5
-RUBY25 := 2.5.6
-RUBY26 := 2.6.6
-RUBY27 := 2.7.2
+RUBY24 := 2.4.10
+RUBY25 := 2.5.8
+RUBY26 := 2.6.7
+RUBY27 := 2.7.3
 GOSS_VERSION := 0.3.9
 
 USER=$(shell id -u)
