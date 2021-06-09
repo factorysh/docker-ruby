@@ -53,10 +53,10 @@ RUN set -eux \
 	; fi \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/* \
-    &&  wget https://raw.github.com/postmodern/postmodern.github.io/master/postmodern.asc \
+    &&  wget -q https://raw.github.com/postmodern/postmodern.github.io/master/postmodern.asc \
     &&  gpg --import postmodern.asc \
-    &&  wget -O ruby-install-${RUBY_INSTALL_VERSION}.tar.gz https://github.com/postmodern/ruby-install/archive/v${RUBY_INSTALL_VERSION}.tar.gz \
-    &&  wget https://raw.github.com/postmodern/ruby-install/master/pkg/ruby-install-${RUBY_INSTALL_VERSION}.tar.gz.asc \
+    &&  wget -qO ruby-install-${RUBY_INSTALL_VERSION}.tar.gz https://github.com/postmodern/ruby-install/archive/v${RUBY_INSTALL_VERSION}.tar.gz \
+    &&  wget -q https://raw.github.com/postmodern/ruby-install/master/pkg/ruby-install-${RUBY_INSTALL_VERSION}.tar.gz.asc \
     &&  gpg --verify ruby-install-${RUBY_INSTALL_VERSION}.tar.gz.asc ruby-install-${RUBY_INSTALL_VERSION}.tar.gz \
     &&  tar -xzvf ruby-install-${RUBY_INSTALL_VERSION}.tar.gz \
     &&  make -C ruby-install-${RUBY_INSTALL_VERSION}/ install \
