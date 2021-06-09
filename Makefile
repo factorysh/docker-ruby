@@ -4,6 +4,7 @@ include Makefile.build_args
 
 .PHONY: rubies
 
+RUBY_INSTALL_VERSION=0.8.1
 # 2.3 is in Stretch
 RUBY23 := 2.3.8
 RUBY24 := 2.4.10
@@ -166,6 +167,7 @@ tool-stretch:
 		$(DOCKER_BUILD_ARGS) \
 		-t ruby-install:stretch \
 		-f Dockerfile.tool \
+		--build-arg RUBY_INSTALL_VERSION=$(RUBY_INSTALL_VERSION) \
 		--build-arg DEBIAN_DISTRO=stretch \
 		.
 
@@ -175,6 +177,7 @@ tool-buster:
 		$(DOCKER_BUILD_ARGS) \
 		-t ruby-install:buster \
 		-f Dockerfile.tool \
+		--build-arg RUBY_INSTALL_VERSION=$(RUBY_INSTALL_VERSION) \
 		--build-arg DEBIAN_DISTRO=buster \
 		.
 
