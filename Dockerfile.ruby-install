@@ -34,6 +34,18 @@ RUN set -eux \
                     libreadline7 \
                     libssl1.1 \
         ; fi \
+    &&  if [ "${DEBIAN_DISTRO}" = "bullseye" ]; then apt-get install -y --no-install-recommends \
+                    ca-certificates \
+                    libffi7 \
+                    libgdbm6 \
+                    libgmp10 \
+                    libncurses5 \
+                    libtinfo5 \
+                    libyaml-0-2 \
+                    zlib1g \
+                    libreadline8 \
+                    libssl1.1 \
+        ; fi \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/rubies/ && chown root:root /opt/rubies
@@ -43,14 +55,16 @@ COPY --chown=root:root rubies/${DEBIAN_DISTRO}/ruby-${RUBY_VERSION} /opt/rubies/
 RUN set -eux \
         # Get Ruby minus version
     &&  RUBY_MINUS_VERSION=$(echo ${RUBY_VERSION} | sed -e 's/^[^.]*\.//' -e 's/\..*//') \
+        # Get Ruby major version
+    &&  RUBY_MAJOR_VERSION=$(echo ${RUBY_VERSION} | cut -c 1) \
         # Handle updates of rubygem based of ruy versions see #7
-    &&  if [ "${RUBY_MINUS_VERSION}" = "0" ]; then \
+    &&  if [ "${RUBY_MAJOR_VERSION}.${RUBY_MINUS_VERSION}" = "2.0" ]; then \
             gem update -q --system 2.0.16 > /dev/null 2>&1; \
-        elif [ "${RUBY_MINUS_VERSION}" = "2" ]; then \
+        elif [ "${RUBY_MAJOR_VERSION}.${RUBY_MINUS_VERSION}" = "2.2" ]; then \
             gem update -q --system 2.4.7 > /dev/null 2>&1; \
-        elif [ "${RUBY_MINUS_VERSION}" = "4" ]; then \
+        elif [ "${RUBY_MAJOR_VERSION}.${RUBY_MINUS_VERSION}" = "2.4" ]; then \
             gem update -q --silent --system 2.6.14; \
-        elif [ "${RUBY_MINUS_VERSION}" = "5" ]; then \
+        elif [ "${RUBY_MAJOR_VERSION}.${RUBY_MINUS_VERSION}" = "2.5" ]; then \
             gem update -q --silent --system; \
         fi \
         # Force install bundler, because in 2.5 bundle exists but no bundler

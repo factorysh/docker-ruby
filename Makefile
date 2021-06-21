@@ -11,6 +11,7 @@ RUBY24 := 2.4.10
 RUBY25 := 2.5.8
 RUBY26 := 2.6.7
 RUBY27 := 2.7.3
+RUBY30 := 3.0.1
 GOSS_VERSION := 0.3.9
 
 USER=$(shell id -u)
@@ -19,6 +20,8 @@ STRETCH_ID=$(shell docker images  bearstech/debian:stretch --format="{{.ID}}" --
 STRETCH_DEV_ID=$(shell docker images  bearstech/debian-dev:stretch --format="{{.ID}}" --quiet)
 BUSTER_ID=$(shell docker images  bearstech/debian:buster --format="{{.ID}}" --quiet)
 BUSTER_DEV_ID=$(shell docker images  bearstech/debian-dev:buster --format="{{.ID}}" --quiet)
+BULLSEYE_ID=$(shell docker images  bearstech/debian:bullseye --format="{{.ID}}" --quiet)
+BULLSEYE_DEV_ID=$(shell docker images  bearstech/debian-dev:bullseye --format="{{.ID}}" --quiet)
 
 DOCKERFILE_APT=$(shell sha1sum Dockerfile.apt | cut -c 1-40)
 DOCKERFILE_APT_DEV=$(shell sha1sum Dockerfile.apt-dev | cut -c 1-40)
@@ -32,12 +35,14 @@ MK24=$(shell sha1sum ruby24.mk | cut -c 1-40)
 MK25=$(shell sha1sum ruby25.mk | cut -c 1-40)
 MK26=$(shell sha1sum ruby26.mk | cut -c 1-40)
 MK27=$(shell sha1sum ruby27.mk | cut -c 1-40)
+MK30=$(shell sha1sum ruby30.mk | cut -c 1-40)
 
 DONE23=image-$(STRETCH_ID)_$(MK23)-$(DOCKERFILE_APT)-$(DOCKERFILE_APT_DEV)-2.3.done
 DONE24=image-$(STRETCH_ID)_$(MK24)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY24).done
 DONE25=image-$(STRETCH_ID)_$(MK25)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY25).done
 DONE26=image-$(STRETCH_ID)_$(MK26)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY26).done
 DONE27=image-$(STRETCH_ID)_$(MK27)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY27).done
+DONE30=image-$(BULLSEYE_ID)_$(MK30)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY30).done
 DONE_SINATRA=image-$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-sinatra.done
 
 include *.mk
@@ -60,6 +65,8 @@ push:
 	docker push bearstech/ruby-dev:2.7
 	docker push bearstech/ruby:2.7-bullseye
 	docker push bearstech/ruby-dev:2.7-bullseye
+	docker push bearstech/ruby:3.0
+	docker push bearstech/ruby-dev:3.0
 	docker push bearstech/sinatra-dev
 
 remove_image:
@@ -75,6 +82,8 @@ remove_image:
 	docker rmi bearstech/ruby-dev:2.7
 	docker rmi bearstech/ruby:2.7-bullseye
 	docker rmi bearstech/ruby-dev:2.7-bullseye
+	docker rmi bearstech/ruby:3.0
+	docker rmi bearstech/ruby-dev:3.0
 	docker rmi bearstech/sinatra-dev
 
 build: | \
@@ -84,6 +93,7 @@ build: | \
 	done25 \
 	done26 \
 	done27 \
+	done30 \
 	done-sinatra \
 	image-2.7-bullseye \
 	image-2.7-dev-bullseye
@@ -116,6 +126,10 @@ ifeq (,$(wildcard done/$(DONE27)))
 	$(MAKE) done/$(DONE27)
 endif
 
+done30:
+ifeq (,$(wildcard done/$(DONE30)))
+	$(MAKE) done/$(DONE30)
+endif
 done-sinatra:
 ifeq (,$(wildcard done/$(DONE_SINATRA)))
 	$(MAKE) done/$(DONE_SINATRA)
@@ -140,6 +154,10 @@ done/$(DONE26): | done image-2.6 image-2.6-dev test-2.6
 done/$(DONE27): | done image-2.7 image-2.7-dev test-2.7
 	rm -f done/image-*-2.7.*.done
 	touch done/$(DONE27)
+
+done/$(DONE30): | done image-3.0 image-3.0-dev test-3.0
+	rm -f done/image-*-3.0.*.done
+	touch done/$(DONE30)
 
 done/$(DONE_SINATRA): | done image-sinatra-dev
 	rm -f done/image-*-sinatra.done
@@ -181,7 +199,16 @@ tool-buster:
 		--build-arg DEBIAN_DISTRO=buster \
 		.
 
-tools: tool-stretch tool-buster
+tool-bullseye:
+	make -C . ignore_all_rubies
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
+		-t ruby-install:bullseye \
+		-f Dockerfile.tool \
+		--build-arg RUBY_INSTALL_VERSION=$(RUBY_INSTALL_VERSION) \
+		--build-arg DEBIAN_DISTRO=bullseye \
+		.
+tools: tool-stretch tool-buster tool-bullseye
 
 image-sinatra-dev:
 	make -C . ignore_all_rubies
@@ -191,8 +218,8 @@ image-sinatra-dev:
 		-f Dockerfile.sinatra-dev \
 		.
 
-image-dev: image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev image-2.7-dev-bullseye
-image: image-2.3 image-2.4 image-2.5 image-2.6 image-2.7 image-2.7-bullseye
+image-dev: image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev image-2.7-dev-bullseye image-3.0-dev
+image: image-2.3 image-2.4 image-2.5 image-2.6 image-2.7 image-2.7-bullseye image-3.0
 images: image image-dev
 
 clean:
@@ -214,7 +241,7 @@ tests_ruby/test_install_db/bin/goss: bin/goss
 
 goss: tests_ruby/test_install_db/bin/goss
 
-test-all: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7 test-2.7-bullseye
+test-all: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7 test-2.7-bullseye test-3.0
 
 down:
 

@@ -51,6 +51,26 @@ RUN set -eux \
                       wget \
                       zlib1g-dev \
 	; fi \
+    &&  if [ "${DEBIAN_DISTRO}" = "bullseye" ]; then apt-get install -y --no-install-recommends \
+                      bison \
+                      bzip2 \
+                      build-essential \
+                      ca-certificates \
+                      git \
+                      gnupg2 \
+                      libffi-dev \
+                      libgdbm6 \
+                      libgdbm-dev \
+                      libncurses5-dev \
+                      libreadline6-dev \
+                      libssl-dev \
+                      libyaml-dev \
+                      make \
+                      openssl \
+                      ruby-dev \
+                      wget \
+                      zlib1g-dev \
+	; fi \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/* \
     &&  wget -q https://raw.github.com/postmodern/postmodern.github.io/master/postmodern.asc \
