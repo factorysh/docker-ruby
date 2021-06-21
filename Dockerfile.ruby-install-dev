@@ -11,6 +11,10 @@ RUN set -eux \
                      libgmp-dev \
                     libpq-dev \
                     lsb-release \
+    && if [ "$(lsb_release -cs)" = "bullseye" ]; then \
+           apt-get install -y --no-install-recommends \
+                    libmariadb-dev \
+       ; fi \
     && if [ "$(lsb_release -cs)" = "buster" ]; then \
            apt-get install -y --no-install-recommends \
                     libmariadb-dev \
