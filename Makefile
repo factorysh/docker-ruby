@@ -218,7 +218,7 @@ image-sinatra-dev:
 		-f Dockerfile.sinatra-dev \
 		.
 
-image-dev: image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev image-2.7-dev-bullseye image-3.0-dev
+image-dev: image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev image-2.7-dev-bullseye image-3.0-dev image-sinatra-dev
 image: image-2.3 image-2.4 image-2.5 image-2.6 image-2.7 image-2.7-bullseye image-3.0
 images: image image-dev
 
