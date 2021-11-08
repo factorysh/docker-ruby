@@ -8,10 +8,10 @@ RUBY_INSTALL_VERSION=0.8.1
 # 2.3 is in Stretch
 RUBY23 := 2.3.8
 RUBY24 := 2.4.10
-RUBY25 := 2.5.8
-RUBY26 := 2.6.7
-RUBY27 := 2.7.3
-RUBY30 := 3.0.1
+RUBY25 := 2.5.9
+RUBY26 := 2.6.8
+RUBY27 := 2.7.4
+RUBY30 := 3.0.2
 GOSS_VERSION := 0.3.9
 
 USER=$(shell id -u)
