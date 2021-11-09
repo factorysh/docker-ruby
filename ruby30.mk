@@ -27,7 +27,6 @@ image-3.0-dev:
 			.
 
 
-test-3.0: bin/goss
+test-3.0: goss
 	@printf "Handling %s\\n" "test-3.0"
 	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=3.0
-

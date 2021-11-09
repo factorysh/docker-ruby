@@ -239,7 +239,7 @@ tests_ruby/test_install_db/bin/goss: bin/goss
 	cp -r bin/goss-$(GOSS_VERSION) tests_ruby/test_install_db/bin/goss-$(GOSS_VERSION)
 	cp -r bin/goss tests_ruby/test_install_db/bin/goss
 
-goss: tests_ruby/test_install_db/bin/goss
+goss: bin/goss tests_ruby/test_install_db/bin/goss
 
 test-all: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7 test-2.7-bullseye test-3.0
 

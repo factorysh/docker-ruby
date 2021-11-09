@@ -44,10 +44,10 @@ image-2.7-dev-bullseye:
 			--build-arg RUBY_VERSION=2.7 \
 			.
 
-test-2.7: bin/goss
+test-2.7: goss
 	@printf "Handling %s\\n" "test-2.7"
 	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=2.7
 
-test-2.7-bullseye: bin/goss
+test-2.7-bullseye: goss
 	@printf "Handling %s\\n" "test-2.7-bullseye"
 	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=2.7-bullseye
