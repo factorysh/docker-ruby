@@ -26,6 +26,6 @@ image-2.5-dev:
 			--build-arg RUBY_FROM_TAG=2.5 \
 			.
 
-test-2.5: bin/goss
+test-2.5: goss
 	@printf "Handling %s\\n" "test-2.5"
 	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=2.5
