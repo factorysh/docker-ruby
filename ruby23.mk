@@ -19,6 +19,6 @@ image-2.3-dev:
 			--build-arg RUBY_VERSION=2.3 \
 			.
 
-test-2.3: tests_ruby/test_install_db/bin/goss
+test-2.3: goss
 	@printf "Handling %s\\n" "test-2.3"
 	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=2.3
