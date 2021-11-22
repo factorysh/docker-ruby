@@ -9,7 +9,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN set -eux \
     &&  echo "source 'https://rubygems.org'" | tee Gemfile \
     &&  echo "gem \"sinatra\", \"= $SINATRA_VERSION\"" | tee -a Gemfile \
-    &&  bundle install --binstubs=/usr/local/bin --path=/vendor
+    &&  bundle config set path 'vendor' \
+    &&  bundle install --binstubs=/usr/local/bin
 
 SHELL ["/bin/sh", "-c"]
 EXPOSE 4567
