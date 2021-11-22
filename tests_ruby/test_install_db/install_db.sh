@@ -8,8 +8,8 @@ ln -sf "$RUBY_VERSION/Gemfile.lock" Gemfile.lock
 # check ruby version
 if [ "$(ruby -e "Gem::Version.new('$VERSION') >= Gem::Version.new('2.7') ? puts('0') : puts('1')")" -ne 0 ]
 then
-	bundle install --path=/ruby/vendor
+	bundle install --path=vendor
 else
-	bundle config set path /ruby/vendor
+	bundle config set path vendor
 	bundle install
 fi
