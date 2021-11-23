@@ -10,6 +10,6 @@ if [ "$(ruby -e "Gem::Version.new('$VERSION') >= Gem::Version.new('2.4') ? puts(
 then
 	bundle install --path=vendor
 else
-	bundle config set path vendor
+	bundle config set --local path 'vendor'
 	bundle install
 fi
