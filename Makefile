@@ -4,7 +4,7 @@ include Makefile.build_args
 
 .PHONY: rubies
 
-RUBY_INSTALL_VERSION=0.8.1
+RUBY_INSTALL_VERSION=0.8.3
 # 2.3 is in Stretch
 RUBY23 := 2.3.8
 RUBY24 := 2.4.10
