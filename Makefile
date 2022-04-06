@@ -52,7 +52,7 @@ build: | \
 	build-30
 
 
-build-23: | tool-stretch image_apt-stretch-2.3 image_apt_dev-stretch-2.3-dev test-2.3
+build-23: | tool-stretch image_apt-stretch-2.3 image_apt_dev-stretch-2.3 test-2.3
 
 build-24: | tool-stretch image_install-stretch-$(RUBY24) image_install_dev-2.4 test-2.4
 
@@ -69,20 +69,9 @@ build-30: | tool-bullseye image_install-bullseye-$(RUBY30) image_install_dev-3.0
 
 build-sinatra: image-sinatra-dev
 
-## Docker ignore utils
-
-ignore_all_rubies:
-	echo "rubies" > .dockerignore
-
-DOCKER_IGNORE_RUBIES_DIR_REV := ""
-DOCKER_IGNORE_RUBIES_DEPTH := "2"
-
-rubies_docker_ignore:
-	find rubies \
-		-mindepth $(DOCKER_IGNORE_RUBIES_DEPTH) \
-		-maxdepth $(DOCKER_IGNORE_RUBIES_DEPTH) | \
-	(grep -v $(DOCKER_IGNORE_RUBIES_DIR_REV) || true) > .dockerignore
-
+empty_context:
+	rm -rf rubies/empty
+	mkdir -p rubies/empty
 
 image_apt-%:
 	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
@@ -96,7 +85,7 @@ image_apt-%:
 		--build-arg RUBY_VERSION=$(version) \
 		.
 
-image_apt_dev-%:
+image_apt_dev-%: empty_context
 	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
 	$(eval tag=$(shell echo $@ | cut -d- -f3-))
 	$(eval version=$(shell echo $@ | cut -d- -f3))
@@ -106,7 +95,7 @@ image_apt_dev-%:
 		-f Dockerfile.apt-dev \
 		--build-arg DEBIAN_DISTRO=$(debian_version) \
 		--build-arg RUBY_VERSION=$(version) \
-		$(shell mkdtemp -d)
+		rubies/empty
 
 image_install-%:
 	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
@@ -125,14 +114,14 @@ image_install-%:
 		--build-arg RUBY_VERSION=$(version) \
 		rubies/$@
 
-image_install_dev-%:
+image_install_dev-%: empty_context
 	$(eval version=$(shell echo $@ | cut -d- -f3))
 	docker build \
 		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/ruby-dev:$(version) \
 		-f Dockerfile.ruby-install-dev \
 		--build-arg RUBY_FROM_TAG=$(version) \
-		$(shell mkdtemp -d)
+		rubies/empty
 
 test-%: goss
 	$(eval version=$(shell echo $@ | cut -d- -f2))
@@ -152,12 +141,12 @@ tool-%:
 		tool/
 tools: tool-stretch tool-buster tool-bullseye
 
-image-sinatra-dev:
+image-sinatra-dev: empty_context
 	docker build \
 		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/sinatra-dev \
 		-f Dockerfile.sinatra-dev \
-		$(shell mkdtemp -d)
+		rubies/empty
 
 image-dev: image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev image-2.7-dev-bullseye image-3.0-dev image-sinatra-dev
 image: image-2.3 image-2.4 image-2.5 image-2.6 image-2.7 image-2.7-bullseye image-3.0
