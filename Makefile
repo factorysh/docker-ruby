@@ -52,13 +52,13 @@ build: | \
 	build-30
 
 
-build-23: | tool-stretch image_apt-stretch-2.3 image_apt_dev-stretch-2.3 test-2.3
+build-23: | image_apt-stretch-2.3 image_apt_dev-stretch-2.3
 
-build-24: | tool-stretch image_install-stretch-$(RUBY24) image_install_dev-2.4 test-2.4
+build-24: | tool-stretch image_install-stretch-$(RUBY24) image_install_dev-2.4
 
-build-25: | tool-stretch image_install-stretch-$(RUBY25) image_install_dev-2.5 test-2.5
+build-25: | tool-stretch image_install-stretch-$(RUBY25) image_install_dev-2.5
 
-build-26: | tool-buster image_install-buster-$(RUBY26) image_install_dev-2.6 test-2.6
+build-26: | tool-buster image_install-buster-$(RUBY26) image_install_dev-2.6
 
 build-27: | image_apt-bullseye-2.7 image_apt_dev-bullseye-2.7 test-2.7
 	docker tag bearstech/ruby:2.7 bearstech/ruby:2.7-bullseye
@@ -102,10 +102,12 @@ image_install-%:
 	$(eval version=$(shell echo $@ | cut -d- -f3))
 	$(eval major_version=$(shell echo $(version) | cut -d. -f1))
 	$(eval minor_version=$(shell echo $(version) | cut -d. -f2))
+	# compile ruby
 	mkdir -p rubies/$@/ruby
 	docker run --rm \
 		--volume `pwd`/rubies/$@:/opt/rubies \
 		ruby-install:(debian_version) $(version) $(USER)
+	# build image using compiled ruby
 	docker build \
 		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/ruby:$(major_version).$(minor_version) \
@@ -167,8 +169,6 @@ tests_ruby/test_install_db/bin/goss: bin/goss
 
 goss: bin/goss tests_ruby/test_install_db/bin/goss
 
-test-all: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7 test-2.7-bullseye test-3.0
+tests: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7 test-2.7-bullseye test-3.0
 
 down:
-
-tests: test-all
