@@ -106,7 +106,7 @@ image_install-%:
 	mkdir -p rubies/$@/ruby
 	docker run --rm \
 		--volume `pwd`/rubies/$@:/opt/rubies \
-		ruby-install:(debian_version) $(version) $(USER)
+		ruby-install:$(debian_version) $(version) $(USER)
 	# build image using compiled ruby
 	docker build \
 		$(DOCKER_BUILD_ARGS) \
@@ -124,11 +124,6 @@ image_install_dev-%: empty_context
 		-f Dockerfile.ruby-install-dev \
 		--build-arg RUBY_FROM_TAG=$(version) \
 		rubies/empty
-
-test-%: goss
-	$(eval version=$(shell echo $@ | cut -d- -f2))
-	@printf "Handling %s\\n" "$@"
-	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=$(version)
 
 ## Tools
 
@@ -158,6 +153,8 @@ clean:
 	rm -rf rubies bin done
 	rm .dockerignore
 
+## Tests
+
 bin/goss:
 	mkdir -p bin
 	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
@@ -167,7 +164,10 @@ tests_ruby/test_install_db/bin/goss: bin/goss
 	mkdir -p tests_ruby/test_install_db/bin
 	cp -r bin/goss tests_ruby/test_install_db/bin/goss
 
-goss: bin/goss tests_ruby/test_install_db/bin/goss
+test-%: tests_ruby/test_install_db/bin/goss
+	$(eval version=$(shell echo $@ | cut -d- -f2))
+	@printf "Handling %s\\n" "$@"
+	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=$(version)
 
 tests: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7 test-2.7-bullseye test-3.0
 
