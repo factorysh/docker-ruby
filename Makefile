@@ -11,7 +11,7 @@ RUBY26 := 2.6.8
 RUBY30 := 3.0.2
 GOSS_VERSION := 0.3.9
 
-BUILD_DIR?=`pwd`/rubies/
+BUILD_DIR?=$(shell pwd)/rubies/
 USER=$(shell id -u)
 BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 
@@ -22,22 +22,12 @@ pull:
 	docker pull bearstech/debian:buster
 	docker pull bearstech/debian:bullseye
 
-push:
-	docker push bearstech/ruby:2.3
-	docker push bearstech/ruby-dev:2.3
-	docker push bearstech/ruby:2.4
-	docker push bearstech/ruby-dev:2.4
-	docker push bearstech/ruby:2.5
-	docker push bearstech/ruby-dev:2.5
-	docker push bearstech/ruby:2.6
-	docker push bearstech/ruby-dev:2.6
-	docker push bearstech/ruby:2.7
-	docker push bearstech/ruby-dev:2.7
-	docker push bearstech/ruby:2.7-bullseye
-	docker push bearstech/ruby-dev:2.7-bullseye
-	docker push bearstech/ruby:3.0
-	docker push bearstech/ruby-dev:3.0
-	docker push bearstech/sinatra-dev
+push-%:
+	$(eval version=$(shell echo $@ | cut -d- -f2))
+	docker push bearstech/python:$(version)
+	docker push bearstech/python-dev:$(version)
+
+push: push-2.5 push-2.7 push-2.7-bullseye push-3.0
 
 remove_image:
 	docker rmi -f $(shell docker images -q --filter="reference=bearstech/sinatra-dev") || true
@@ -45,10 +35,7 @@ remove_image:
 	docker rmi -f $(shell docker images -q --filter="reference=bearstech/ruby") || true
 
 build: | \
-	build-24 \
-	build-23 \
 	build-25 \
-	build-26 \
 	build-27 \
 	build-30
 
@@ -57,11 +44,11 @@ build-23: | image_apt-stretch-2.3 image_apt_dev-stretch-2.3
 
 build-24: | tool-stretch image_install-stretch-$(RUBY24) image_install_dev-2.4
 
-build-25: | tool-stretch image_install-stretch-$(RUBY25) image_install_dev-2.5
+build-25: | image_apt-buster-2.5 image_apt_dev-buster-2.5
 
 build-26: | tool-buster image_install-buster-$(RUBY26) image_install_dev-2.6
 
-build-27: | image_apt-bullseye-2.7 image_apt_dev-bullseye-2.7 test-2.7
+build-27: | image_apt-bullseye-2.7 image_apt_dev-bullseye-2.7
 	docker tag bearstech/ruby:2.7 bearstech/ruby:2.7-bullseye
 	docker tag bearstech/ruby-dev:2.7 bearstech/ruby-dev:2.7-bullseye
 
@@ -104,11 +91,11 @@ image_install-%:
 	$(eval minor_version=$(shell echo $(version) | cut -d. -f2))
 	# compile ruby iif not done yet
 	mkdir -p $(BUILD_DIR)/$@
-	[ -e $(BUILD_DIR)/$@/ruby-$(version).done ] || \
+	[ -e $(BUILD_DIR)/$@.done ] || \
 	docker run --rm \
 		--volume $(BUILD_DIR)/$@:/opt/rubies \
 		ruby-install:$(debian_version) $(version) $(USER)
-	touch $(BUILD_DIR)/$@/ruby-$(version).done
+	touch $(BUILD_DIR)/$@.done
 	# build image using compiled ruby
 	docker build \
 		$(DOCKER_BUILD_ARGS) \
@@ -119,7 +106,7 @@ image_install-%:
 		$(BUILD_DIR)/$@
 
 image_install_dev-%: empty_context
-	$(eval version=$(shell echo $@ | cut -d- -f3))
+	$(eval version=$(shell echo $@ | cut -d- -f2))
 	docker build \
 		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/ruby-dev:$(version) \
@@ -168,6 +155,6 @@ test-%: tests_ruby/test_install_db/bin/goss
 	@printf "Handling %s\\n" "$@"
 	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=$(version)
 
-tests: | test-2.3 test-2.4 test-2.5 test-2.6 test-2.7 test-2.7-bullseye test-3.0
+tests: | test-2.5 test-2.7 test-2.7-bullseye test-3.0
 
 down:
