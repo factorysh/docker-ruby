@@ -50,7 +50,7 @@ RUN set -eux \
     &&  rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/rubies/ && chown root:root /opt/rubies
 
-COPY --chown=root:root ruby /opt/rubies/ruby-${RUBY_VERSION}
+COPY --chown=root:root ruby-${RUBY_VERSION} /opt/rubies/ruby-${RUBY_VERSION}
 
 RUN set -eux \
         # Get Ruby minus version
