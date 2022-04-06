@@ -11,7 +11,7 @@ RUBY26 := 2.6.8
 RUBY30 := 3.0.2
 GOSS_VERSION := 0.3.9
 
-BUILD_DIR=`pwd`/rubies/
+BUILD_DIR?=`pwd`/rubies/
 USER=$(shell id -u)
 BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 
@@ -97,29 +97,26 @@ image_apt_dev-%: empty_context
 		--build-arg RUBY_VERSION=$(version) \
 		$(BUILD_DIR)/empty
 
-$(BUILD_DIR)/%:
-	# compile ruby
-	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
-	$(eval version=$(shell echo $@ | cut -d- -f3))
-	mkdir -p $@/ruby
-	docker run --rm \
-		--volume $@/ruby:/opt/rubies \
-		ruby-install:$(debian_version) $(version) $(USER)
-
 image_install-%:
 	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
 	$(eval version=$(shell echo $@ | cut -d- -f3))
 	$(eval major_version=$(shell echo $(version) | cut -d. -f1))
 	$(eval minor_version=$(shell echo $(version) | cut -d. -f2))
-	make $(BUILD_DIR)/$@
+	# compile ruby iif not done yet
+	mkdir -p $(BUILD_DIR)/$@
+	[ -e $(BUILD_DIR)/$@/ruby-$(version).done ] || \
+	docker run --rm \
+		--volume $(BUILD_DIR)/$@:/opt/rubies \
+		ruby-install:$(debian_version) $(version) $(USER)
+	touch $(BUILD_DIR)/$@/ruby-$(version).done
 	# build image using compiled ruby
 	docker build \
 		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/ruby:$(major_version).$(minor_version) \
 		-f Dockerfile.ruby-install \
-		--build-arg DEBIAN_DISTRO=stretch \
+		--build-arg DEBIAN_DISTRO=$(debian_version) \
 		--build-arg RUBY_VERSION=$(version) \
-		$(BUILD_DIR)/$@/ruby
+		$(BUILD_DIR)/$@
 
 image_install_dev-%: empty_context
 	$(eval version=$(shell echo $@ | cut -d- -f3))
