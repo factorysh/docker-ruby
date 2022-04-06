@@ -14,8 +14,6 @@ GOSS_VERSION := 0.3.9
 USER=$(shell id -u)
 BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 
-include *.mk
-
 all: pull build
 
 pull:
