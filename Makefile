@@ -5,45 +5,14 @@ include Makefile.build_args
 .PHONY: rubies
 
 RUBY_INSTALL_VERSION=0.8.3
-# 2.3 is in Stretch
-RUBY23 := 2.3.8
 RUBY24 := 2.4.10
 RUBY25 := 2.5.9
 RUBY26 := 2.6.8
-RUBY27 := 2.7.4
 RUBY30 := 3.0.2
 GOSS_VERSION := 0.3.9
 
 USER=$(shell id -u)
 BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
-STRETCH_ID=$(shell docker images  bearstech/debian:stretch --format="{{.ID}}" --quiet)
-STRETCH_DEV_ID=$(shell docker images  bearstech/debian-dev:stretch --format="{{.ID}}" --quiet)
-BUSTER_ID=$(shell docker images  bearstech/debian:buster --format="{{.ID}}" --quiet)
-BUSTER_DEV_ID=$(shell docker images  bearstech/debian-dev:buster --format="{{.ID}}" --quiet)
-BULLSEYE_ID=$(shell docker images  bearstech/debian:bullseye --format="{{.ID}}" --quiet)
-BULLSEYE_DEV_ID=$(shell docker images  bearstech/debian-dev:bullseye --format="{{.ID}}" --quiet)
-
-DOCKERFILE_APT=$(shell sha1sum Dockerfile.apt | cut -c 1-40)
-DOCKERFILE_APT_DEV=$(shell sha1sum Dockerfile.apt-dev | cut -c 1-40)
-DOCKERFILE_RUBY_INSTALL=$(shell sha1sum Dockerfile.ruby-install | cut -c 1-40)
-DOCKERFILE_RUBY_INSTALL_DEV=$(shell sha1sum Dockerfile.ruby-install-dev | cut -c 1-40)
-DOCKERFILE_SINATRA_DEV=$(shell sha1sum Dockerfile.sinatra-dev | cut -c 1-40)
-DOCKERFILE_TOOL=$(shell sha1sum Dockerfile.tool | cut -c 1-40)
-
-MK23=$(shell sha1sum ruby23.mk | cut -c 1-40)
-MK24=$(shell sha1sum ruby24.mk | cut -c 1-40)
-MK25=$(shell sha1sum ruby25.mk | cut -c 1-40)
-MK26=$(shell sha1sum ruby26.mk | cut -c 1-40)
-MK27=$(shell sha1sum ruby27.mk | cut -c 1-40)
-MK30=$(shell sha1sum ruby30.mk | cut -c 1-40)
-
-DONE23=image-$(STRETCH_ID)_$(MK23)-$(DOCKERFILE_APT)-$(DOCKERFILE_APT_DEV)-2.3.done
-DONE24=image-$(STRETCH_ID)_$(MK24)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY24).done
-DONE25=image-$(STRETCH_ID)_$(MK25)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY25).done
-DONE26=image-$(STRETCH_ID)_$(MK26)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY26).done
-DONE27=image-$(STRETCH_ID)_$(MK27)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY27).done
-DONE30=image-$(BULLSEYE_ID)_$(MK30)-$(DOCKERFILE_RUBY_INSTALL)-$(DOCKERFILE_RUBY_INSTALL_DEV)-$(RUBY30).done
-DONE_SINATRA=image-$(STRETCH_DEV_ID)-$(GIT_VERSION)-$(BRANCH)-sinatra.done
 
 include *.mk
 
@@ -51,6 +20,8 @@ all: pull build
 
 pull:
 	docker pull bearstech/debian:stretch
+	docker pull bearstech/debian:buster
+	docker pull bearstech/debian:bullseye
 
 push:
 	docker push bearstech/ruby:2.3
@@ -70,98 +41,35 @@ push:
 	docker push bearstech/sinatra-dev
 
 remove_image:
-	docker rmi bearstech/ruby:2.3
-	docker rmi bearstech/ruby-dev:2.3
-	docker rmi bearstech/ruby:2.4
-	docker rmi bearstech/ruby-dev:2.4
-	docker rmi bearstech/ruby:2.5
-	docker rmi bearstech/ruby-dev:2.5
-	docker rmi bearstech/ruby:2.6
-	docker rmi bearstech/ruby-dev:2.6
-	docker rmi bearstech/ruby:2.7
-	docker rmi bearstech/ruby-dev:2.7
-	docker rmi bearstech/ruby:2.7-bullseye
-	docker rmi bearstech/ruby-dev:2.7-bullseye
-	docker rmi bearstech/ruby:3.0
-	docker rmi bearstech/ruby-dev:3.0
-	docker rmi bearstech/sinatra-dev
+	docker rmi -f $(shell docker images -q --filter="reference=bearstech/sinatra-dev") || true
+	docker rmi -f $(shell docker images -q --filter="reference=bearstech/ruby-dev") || true
+	docker rmi -f $(shell docker images -q --filter="reference=bearstech/ruby") || true
 
 build: | \
-	tools \
-	done23 \
-	done24 \
-	done25 \
-	done26 \
-	done27 \
-	done30 \
-	done-sinatra \
-	image-2.7-bullseye \
-	image-2.7-dev-bullseye
+	build-23 \
+	build-24 \
+	build-25 \
+	build-26 \
+	build-27 \
+	build-30
 
-done:
-	mkdir -p done
 
-done23:
-ifeq (,$(wildcard done/$(DONE23)))
-	$(MAKE) done/$(DONE23)
-endif
+build-23: | tool-stretch image_apt-stretch-2.3 image_apt_dev-stretch-2.3-dev test-2.3
 
-done24:
-ifeq (,$(wildcard done/$(DONE24)))
-	$(MAKE) done/$(DONE24)
-endif
+build-24: | tool-stretch image_install-stretch-$(RUBY24) image_install_dev-2.4 test-2.4
 
-done25:
-ifeq (,$(wildcard done/$(DONE25)))
-	$(MAKE) done/$(DONE25)
-endif
+build-25: | tool-stretch image_install-stretch-$(RUBY25) image_install_dev-2.5 test-2.5
 
-done26:
-ifeq (,$(wildcard done/$(DONE26)))
-	$(MAKE) done/$(DONE26)
-endif
+build-26: | tool-buster image_install-buster-$(RUBY26) image_install_dev-2.6 test-2.6
 
-done27:
-ifeq (,$(wildcard done/$(DONE27)))
-	$(MAKE) done/$(DONE27)
-endif
+build-27: | image_apt-bullseye-2.7 image_apt_dev-bullseye-2.7 test-2.7
+	docker tag bearstech/ruby:2.7 bearstech/ruby:2.7-bullseye
+	docker tag bearstech/ruby-dev:2.7 bearstech/ruby-dev:2.7-bullseye
 
-done30:
-ifeq (,$(wildcard done/$(DONE30)))
-	$(MAKE) done/$(DONE30)
-endif
-done-sinatra:
-ifeq (,$(wildcard done/$(DONE_SINATRA)))
-	$(MAKE) done/$(DONE_SINATRA)
-endif
 
-done/$(DONE23): | done image-2.3 image-2.3-dev test-2.3
-	rm -f done/image-*-2.3.done
-	touch done/$(DONE23)
+build-30: | tool-bullseye image_install-bullseye-$(RUBY30) image_install_dev-3.0 test-3.0
 
-done/$(DONE24): | done image-2.4 image-2.4-dev test-2.4
-	rm -f done/image-*-2.4.*.done
-	touch done/$(DONE24)
-
-done/$(DONE25): | done image-2.5 image-2.5-dev test-2.5
-	rm -f done/image-*-2.5.*.done
-	touch done/$(DONE25)
-
-done/$(DONE26): | done image-2.6 image-2.6-dev test-2.6
-	rm -f done/image-*-2.6.*.done
-	touch done/$(DONE26)
-
-done/$(DONE27): | done image-2.7 image-2.7-dev test-2.7
-	rm -f done/image-*-2.7.*.done
-	touch done/$(DONE27)
-
-done/$(DONE30): | done image-3.0 image-3.0-dev test-3.0
-	rm -f done/image-*-3.0.*.done
-	touch done/$(DONE30)
-
-done/$(DONE_SINATRA): | done image-sinatra-dev
-	rm -f done/image-*-sinatra.done
-	touch done/$(DONE_SINATRA)
+build-sinatra: image-sinatra-dev
 
 ## Docker ignore utils
 
@@ -177,46 +85,81 @@ rubies_docker_ignore:
 		-maxdepth $(DOCKER_IGNORE_RUBIES_DEPTH) | \
 	(grep -v $(DOCKER_IGNORE_RUBIES_DIR_REV) || true) > .dockerignore
 
+
+image_apt-%:
+	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
+	$(eval tag=$(shell echo $@ | cut -d- -f3-))
+	$(eval version=$(shell echo $@ | cut -d- -f3))
+	docker build \
+		$(DOCKER_BUILD_ARGS) \
+		-t bearstech/ruby:$(tag) \
+		-f Dockerfile.apt \
+		--build-arg DEBIAN_DISTRO=$(debian_version) \
+		--build-arg RUBY_VERSION=$(version) \
+		.
+
+image_apt_dev-%:
+	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
+	$(eval tag=$(shell echo $@ | cut -d- -f3-))
+	$(eval version=$(shell echo $@ | cut -d- -f3))
+	docker build \
+		$(DOCKER_BUILD_ARGS) \
+		-t bearstech/ruby-dev:$(tag) \
+		-f Dockerfile.apt-dev \
+		--build-arg DEBIAN_DISTRO=$(debian_version) \
+		--build-arg RUBY_VERSION=$(version) \
+		$(shell mkdtemp -d)
+
+image_install-%:
+	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
+	$(eval version=$(shell echo $@ | cut -d- -f3))
+	$(eval major_version=$(shell echo $(version) | cut -d. -f1))
+	$(eval minor_version=$(shell echo $(version) | cut -d. -f2))
+	mkdir -p rubies/$@/ruby
+	docker run --rm \
+		--volume `pwd`/rubies/$@:/opt/rubies \
+		ruby-install:(debian_version) $(version) $(USER)
+	docker build \
+		$(DOCKER_BUILD_ARGS) \
+		-t bearstech/ruby:$(major_version).$(minor_version) \
+		-f Dockerfile.ruby-install \
+		--build-arg DEBIAN_DISTRO=stretch \
+		--build-arg RUBY_VERSION=$(version) \
+		rubies/$@
+
+image_install_dev-%:
+	$(eval version=$(shell echo $@ | cut -d- -f3))
+	docker build \
+		$(DOCKER_BUILD_ARGS) \
+		-t bearstech/ruby-dev:$(version) \
+		-f Dockerfile.ruby-install-dev \
+		--build-arg RUBY_FROM_TAG=$(version) \
+		$(shell mkdtemp -d)
+
+test-%: goss
+	$(eval version=$(shell echo $@ | cut -d- -f2))
+	@printf "Handling %s\\n" "$@"
+	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=$(version)
+
 ## Tools
 
-tool-stretch:
-	make -C . ignore_all_rubies
-	 docker build \
+tool-%:
+	$(eval debian_version=$(shell echo $@ | cut -d- -f2-))
+	docker build \
 		$(DOCKER_BUILD_ARGS) \
-		-t ruby-install:stretch \
-		-f Dockerfile.tool \
+		-t ruby-install:$(debian_version) \
+		-f tool/Dockerfile \
 		--build-arg RUBY_INSTALL_VERSION=$(RUBY_INSTALL_VERSION) \
-		--build-arg DEBIAN_DISTRO=stretch \
-		.
-
-tool-buster:
-	make -C . ignore_all_rubies
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		-t ruby-install:buster \
-		-f Dockerfile.tool \
-		--build-arg RUBY_INSTALL_VERSION=$(RUBY_INSTALL_VERSION) \
-		--build-arg DEBIAN_DISTRO=buster \
-		.
-
-tool-bullseye:
-	make -C . ignore_all_rubies
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		-t ruby-install:bullseye \
-		-f Dockerfile.tool \
-		--build-arg RUBY_INSTALL_VERSION=$(RUBY_INSTALL_VERSION) \
-		--build-arg DEBIAN_DISTRO=bullseye \
-		.
+		--build-arg DEBIAN_DISTRO=$(debian_version) \
+		tool/
 tools: tool-stretch tool-buster tool-bullseye
 
 image-sinatra-dev:
-	make -C . ignore_all_rubies
-	 docker build \
+	docker build \
 		$(DOCKER_BUILD_ARGS) \
 		-t bearstech/sinatra-dev \
 		-f Dockerfile.sinatra-dev \
-		.
+		$(shell mkdtemp -d)
 
 image-dev: image-2.3-dev image-2.4-dev image-2.5-dev image-2.6-dev image-2.7-dev image-2.7-dev-bullseye image-3.0-dev image-sinatra-dev
 image: image-2.3 image-2.4 image-2.5 image-2.6 image-2.7 image-2.7-bullseye image-3.0
@@ -226,17 +169,13 @@ clean:
 	rm -rf rubies bin done
 	rm .dockerignore
 
-bin/goss-$(GOSS_VERSION):
+bin/goss:
 	mkdir -p bin
-	curl -o bin/goss-$(GOSS_VERSION) -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
-	chmod +x bin/goss-$(GOSS_VERSION)
-
-bin/goss: bin/goss-$(GOSS_VERSION)
-	ln -sf goss-$(GOSS_VERSION) bin/goss
+	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
+	chmod +x bin/goss
 
 tests_ruby/test_install_db/bin/goss: bin/goss
 	mkdir -p tests_ruby/test_install_db/bin
-	cp -r bin/goss-$(GOSS_VERSION) tests_ruby/test_install_db/bin/goss-$(GOSS_VERSION)
 	cp -r bin/goss tests_ruby/test_install_db/bin/goss
 
 goss: bin/goss tests_ruby/test_install_db/bin/goss

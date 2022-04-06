@@ -84,19 +84,3 @@ RUN set -eux \
 
 COPY tool-setup.sh tool-setup.sh
 ENTRYPOINT ["sh", "./tool-setup.sh"]
-
-# generated labels
-
-ARG GIT_VERSION
-ARG GIT_DATE
-ARG BUILD_DATE
-
-LABEL com.bearstech.image.revision_date=${GIT_DATE}
-
-LABEL org.opencontainers.image.authors=Bearstech
-
-LABEL org.opencontainers.image.revision=${GIT_VERSION}
-LABEL org.opencontainers.image.created=${BUILD_DATE}
-
-LABEL org.opencontainers.image.url=https://github.com/factorysh/docker-ruby
-LABEL org.opencontainers.image.source=https://github.com/factorysh/docker-ruby/blob/${GIT_VERSION}/Dockerfile.tool
