@@ -6,9 +6,8 @@ include Makefile.build_args
 
 RUBY_INSTALL_VERSION=0.8.3
 RUBY24 := 2.4.10
-RUBY25 := 2.5.9
-RUBY26 := 2.6.8
-RUBY30 := 3.0.2
+RUBY26 := 2.6.9
+RUBY31 := 3.1.1
 GOSS_VERSION := 0.3.9
 
 BUILD_DIR?=$(shell pwd)/rubies/
@@ -27,7 +26,7 @@ push-%:
 	docker push bearstech/python:$(version)
 	docker push bearstech/python-dev:$(version)
 
-push: push-2.5 push-2.7 push-2.7-bullseye push-3.0
+push: push-2.5 push-2.7 push-2.7-bullseye
 
 remove_image:
 	docker rmi -f $(shell docker images -q --filter="reference=bearstech/sinatra-dev") || true
@@ -36,8 +35,7 @@ remove_image:
 
 build: | \
 	build-25 \
-	build-27 \
-	build-30
+	build-27
 
 
 build-23: | image_apt-stretch-2.3 image_apt_dev-stretch-2.3
@@ -52,7 +50,7 @@ build-27: | image_apt-bullseye-2.7 image_apt_dev-bullseye-2.7
 	docker tag bearstech/ruby:2.7 bearstech/ruby:2.7-bullseye
 	docker tag bearstech/ruby-dev:2.7 bearstech/ruby-dev:2.7-bullseye
 
-build-30: | tool-bullseye image_install-bullseye-$(RUBY30) image_install_dev-3.0 test-3.0
+build-31: | tool-bullseye image_install-bullseye-$(RUBY31) image_install_dev-3.1
 
 build-sinatra: image-sinatra-dev
 
@@ -60,7 +58,9 @@ empty_context:
 	rm -rf $(BUILD_DIR)/empty
 	mkdir -p $(BUILD_DIR)/empty
 
-image_apt-%:
+## Install with apt
+
+image_apt-%: empty_context
 	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
 	$(eval tag=$(shell echo $@ | cut -d- -f3-))
 	$(eval version=$(shell echo $@ | cut -d- -f3))
@@ -70,7 +70,7 @@ image_apt-%:
 		-f Dockerfile.apt \
 		--build-arg DEBIAN_DISTRO=$(debian_version) \
 		--build-arg RUBY_VERSION=$(version) \
-		.
+		$(BUILD_DIR)/empty
 
 image_apt_dev-%: empty_context
 	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
@@ -84,6 +84,8 @@ image_apt_dev-%: empty_context
 		--build-arg RUBY_VERSION=$(version) \
 		$(BUILD_DIR)/empty
 
+## Install with ruby install
+
 image_install-%:
 	$(eval debian_version=$(shell echo $@ | cut -d- -f2))
 	$(eval version=$(shell echo $@ | cut -d- -f3))
@@ -91,6 +93,7 @@ image_install-%:
 	$(eval minor_version=$(shell echo $(version) | cut -d. -f2))
 	# compile ruby iif not done yet
 	mkdir -p $(BUILD_DIR)/$@
+	# only compile ruby if needed
 	[ -e $(BUILD_DIR)/$@.done ] || \
 	docker run --rm \
 		--volume $(BUILD_DIR)/$@:/opt/rubies \
@@ -155,6 +158,6 @@ test-%: tests_ruby/test_install_db/bin/goss
 	@printf "Handling %s\\n" "$@"
 	@make -C tests_ruby/test_install_db install tests down RUBY_VERSION=$(version)
 
-tests: | test-2.5 test-2.7 test-2.7-bullseye test-3.0
+tests: | test-2.5 test-2.7 test-2.7-bullseye
 
 down:
