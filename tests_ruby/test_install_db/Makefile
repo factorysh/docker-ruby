@@ -13,8 +13,10 @@ tests: | build down install db
 	RUBY_VERSION=${RUBY_VERSION} docker-compose up --exit-code-from client client
 
 install:
+	mkdir -p .bundle
 	docker run --rm \
 		-v `pwd`:/ruby \
+		-v `pwd`/.bundle:/.bundle \
 		-w /ruby \
 		-u `id -u` \
 		-e RUBY_VERSION=${RUBY_VERSION} \
