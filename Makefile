@@ -139,8 +139,7 @@ image-sinatra-dev: empty_context
 		$(BUILD_DIR)/empty
 
 clean:
-	rm -rf rubies bin done
-	rm .dockerignore
+	rm -rf rubies bin tests_ruby/test_install_db/bin
 
 ## Tests
 
