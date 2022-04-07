@@ -50,7 +50,7 @@ RUN set -eux \
     &&  rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/rubies/ && chown root:root /opt/rubies
 
-COPY --chown=root:root rubies/${DEBIAN_DISTRO}/ruby-${RUBY_VERSION} /opt/rubies/ruby-${RUBY_VERSION}
+COPY --chown=root:root ruby-${RUBY_VERSION} /opt/rubies/ruby-${RUBY_VERSION}
 
 RUN set -eux \
         # Get Ruby minus version
@@ -58,11 +58,7 @@ RUN set -eux \
         # Get Ruby major version
     &&  RUBY_MAJOR_VERSION=$(echo ${RUBY_VERSION} | cut -c 1) \
         # Handle updates of rubygem based of ruy versions see #7
-    &&  if [ "${RUBY_MAJOR_VERSION}.${RUBY_MINUS_VERSION}" = "2.0" ]; then \
-            gem update -q --system 2.0.16 > /dev/null 2>&1; \
-        elif [ "${RUBY_MAJOR_VERSION}.${RUBY_MINUS_VERSION}" = "2.2" ]; then \
-            gem update -q --system 2.4.7 > /dev/null 2>&1; \
-        elif [ "${RUBY_MAJOR_VERSION}.${RUBY_MINUS_VERSION}" = "2.4" ]; then \
+    &&  if [ "${RUBY_MAJOR_VERSION}.${RUBY_MINUS_VERSION}" = "2.4" ]; then \
             gem update -q --silent --system 2.6.14; \
         elif [ "${RUBY_MAJOR_VERSION}.${RUBY_MINUS_VERSION}" = "2.5" ]; then \
             gem update -q --silent --system; \

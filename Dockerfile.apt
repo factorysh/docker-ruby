@@ -10,7 +10,9 @@ RUN set -eux \
     && apt-get install -y --no-install-recommends \
             ruby \
             ruby${RUBY_VERSION} \
-    && if [ "${DEBIAN_DISTRO}" = "bullseye" ]; then \
+    && if [ "${DEBIAN_DISTRO}" = "buster" ]; then \
+	  apt-get install -y --no-install-recommends bundler; \
+    elif [ "${DEBIAN_DISTRO}" = "bullseye" ]; then \
 	  apt-get install -y --no-install-recommends bundler; \
 	else \
 	  gem install \
